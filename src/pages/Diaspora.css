@@ -1,0 +1,2726 @@
+
+/* =========================================
+   DUISBURG DEVELOPERS - DIASPORA PAGE
+========================================= */
+
+.diaspora-page {
+  --d-navy: #102b3f;
+  --d-dark: #091d2b;
+  --d-gold: #c99b52;
+  --d-gold-light: #e3c18b;
+  --d-text: #4d5962;
+  --d-muted: #77818a;
+  --d-light: #f5f6f7;
+  --d-white: #ffffff;
+  --d-border: #e5e8eb;
+
+  width: 100%;
+  overflow: hidden;
+  color: var(--d-dark);
+  background: #fff;
+  font-family: inherit;
+}
+
+.diaspora-page * {
+  box-sizing: border-box;
+}
+
+.diaspora-page a {
+  text-decoration: none;
+}
+
+.diaspora-container {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.section-pad {
+  padding: 105px 0;
+}
+
+.diaspora-label {
+  display: inline-block;
+  margin-bottom: 18px;
+  color: var(--d-gold);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.3px;
+  line-height: 1.7;
+}
+
+/* HEADER */
+
+.diaspora-header {
+  position: relative;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.diaspora-nav-container {
+  width: min(1280px, calc(100% - 48px));
+  min-height: 88px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.diaspora-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--d-navy);
+  flex-shrink: 0;
+}
+
+.diaspora-brand img {
+  width: 54px;
+  height: 54px;
+  object-fit: contain;
+}
+
+.diaspora-brand span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.diaspora-brand strong {
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.diaspora-brand small {
+  margin-top: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.diaspora-nav {
+  display: flex;
+  align-items: center;
+  gap: 34px;
+}
+
+.diaspora-nav a {
+  color: #33414d;
+  font-size: 13px;
+  font-weight: 650;
+  transition: color 0.25s ease;
+}
+
+.diaspora-nav a:hover,
+.diaspora-nav a[href="/diaspora"] {
+  color: var(--d-gold);
+}
+
+.diaspora-header-contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 13px 17px;
+  background: var(--d-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 750;
+  transition: background 0.25s ease;
+}
+
+.diaspora-header-contact:hover {
+  background: var(--d-gold);
+}
+
+.diaspora-menu-button {
+  display: none;
+  background: none;
+  border: 0;
+  color: var(--d-navy);
+  cursor: pointer;
+}
+
+/* HERO */
+
+.diaspora-hero {
+  position: relative;
+  min-height: 690px;
+  display: flex;
+  align-items: center;
+  background: var(--d-dark);
+  isolation: isolate;
+}
+
+.diaspora-hero-image {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background-image: url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2200&q=90");
+  background-position: center 55%;
+  background-size: cover;
+  animation: diasporaHeroZoom 16s ease-in-out infinite alternate;
+}
+
+@keyframes diasporaHeroZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.07); }
+}
+
+.diaspora-hero-overlay {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 22, 34, 0.94) 0%, rgba(5, 22, 34, 0.78) 48%, rgba(5, 22, 34, 0.25) 100%),
+    linear-gradient(0deg, rgba(5, 22, 34, 0.35), transparent 60%);
+}
+
+.diaspora-hero-content {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 100px 0 120px;
+  color: #fff;
+  animation: diasporaFadeUp 0.9s ease both;
+}
+
+@keyframes diasporaFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.diaspora-eyebrow {
+  display: inline-block;
+  margin-bottom: 25px;
+  color: var(--d-gold-light);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+}
+
+.diaspora-hero h1 {
+  max-width: 850px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(43px, 6.5vw, 79px);
+  font-weight: 850;
+  letter-spacing: -3.5px;
+  line-height: 1.04;
+}
+
+.diaspora-hero h1 span {
+  color: var(--d-gold-light);
+}
+
+.diaspora-hero-content > p {
+  max-width: 630px;
+  margin: 26px 0 30px;
+  color: rgba(255,255,255,0.82);
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.diaspora-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.diaspora-btn {
+  min-height: 54px;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  font-size: 13px;
+  font-weight: 800;
+  transition: 0.25s ease;
+}
+
+.diaspora-btn-gold {
+  color: #142838;
+  background: var(--d-gold-light);
+}
+
+.diaspora-btn-gold:hover {
+  background: #fff;
+  transform: translateY(-3px);
+}
+
+.diaspora-btn-outline {
+  border: 1px solid rgba(255,255,255,0.65);
+  color: #fff;
+}
+
+.diaspora-btn-outline:hover {
+  border-color: var(--d-gold-light);
+  color: var(--d-gold-light);
+}
+
+.diaspora-hero-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 45px;
+  color: rgba(255,255,255,0.78);
+  font-size: 12px;
+}
+
+.diaspora-hero-note svg {
+  color: var(--d-gold-light);
+}
+
+.diaspora-scroll {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.75);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.diaspora-scroll span {
+  width: 1px;
+  height: 35px;
+  background: var(--d-gold-light);
+}
+
+/* INTRO */
+
+.diaspora-intro-grid {
+  display: grid;
+  grid-template-columns: 1fr 0.95fr;
+  align-items: center;
+  gap: 85px;
+}
+
+.diaspora-intro-copy h2,
+.diaspora-remote-copy h2,
+.diaspora-mistakes-grid h2,
+.checklist-heading h2,
+.diaspora-faq-heading h2,
+.diaspora-enquiry-copy h2 {
+  margin: 0 0 24px;
+  color: var(--d-navy);
+  font-size: clamp(33px, 4vw, 49px);
+  font-weight: 850;
+  letter-spacing: -1.8px;
+  line-height: 1.15;
+}
+
+.diaspora-intro-copy h2 span,
+.diaspora-remote-copy h2 span,
+.diaspora-mistakes-grid h2 span,
+.checklist-heading h2 span,
+.diaspora-faq-heading h2 span,
+.diaspora-enquiry-copy h2 span {
+  color: var(--d-gold);
+}
+
+.diaspora-intro-copy p,
+.diaspora-remote-copy > p,
+.diaspora-mistakes-grid > div:first-child > p,
+.checklist-heading p,
+.diaspora-faq-heading > p,
+.diaspora-enquiry-copy > p {
+  color: var(--d-text);
+  font-size: 14px;
+  line-height: 1.95;
+  margin: 0 0 17px;
+}
+
+.diaspora-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  color: var(--d-navy);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.diaspora-text-link:hover {
+  color: var(--d-gold);
+}
+
+.diaspora-intro-visual {
+  position: relative;
+  padding: 0 0 35px 35px;
+}
+
+.diaspora-intro-visual::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 0;
+  width: 55%;
+  height: 70%;
+  border: 2px solid var(--d-gold);
+}
+
+.diaspora-intro-visual > img {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  display: block;
+  object-fit: cover;
+}
+
+.diaspora-image-caption {
+  position: absolute;
+  right: -15px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 22px 27px;
+  background: var(--d-navy);
+  color: #fff;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.14);
+}
+
+.diaspora-image-caption > svg {
+  color: var(--d-gold-light);
+}
+
+.diaspora-image-caption span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.diaspora-image-caption strong {
+  font-size: 14px;
+}
+
+.diaspora-image-caption small {
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+}
+
+/* SECTION HEADINGS */
+
+.diaspora-section-heading {
+  max-width: 720px;
+  margin: 0 auto 55px;
+  text-align: center;
+}
+
+.diaspora-section-heading h2 {
+  margin: 0 0 20px;
+  color: var(--d-navy);
+  font-size: clamp(34px, 4vw, 48px);
+  font-weight: 850;
+  letter-spacing: -1.8px;
+  line-height: 1.16;
+}
+
+.diaspora-section-heading h2 span {
+  color: var(--d-gold);
+}
+
+.diaspora-section-heading p {
+  max-width: 650px;
+  margin: auto;
+  color: var(--d-text);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* CHALLENGES */
+
+.diaspora-challenges {
+  background: var(--d-light);
+}
+
+.diaspora-risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.diaspora-risk-card {
+  min-height: 240px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #edf0f2;
+  transition: 0.3s ease;
+}
+
+.diaspora-risk-card:hover {
+  transform: translateY(-7px);
+  border-color: var(--d-gold);
+  box-shadow: 0 15px 35px rgba(16,43,63,0.08);
+}
+
+.diaspora-risk-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.diaspora-risk-top span {
+  color: #c5cbd0;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.diaspora-risk-top svg {
+  color: var(--d-gold);
+}
+
+.diaspora-risk-card h3 {
+  margin: 0 0 12px;
+  color: var(--d-navy);
+  font-size: 18px;
+}
+
+.diaspora-risk-card p {
+  margin: 0;
+  color: var(--d-text);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* PLANNING */
+
+.diaspora-planning-list {
+  max-width: 930px;
+  margin: 0 auto;
+}
+
+.diaspora-planning-card {
+  display: grid;
+  grid-template-columns: 65px 70px 1fr;
+  gap: 25px;
+  padding: 36px 0;
+  border-bottom: 1px solid var(--d-border);
+}
+
+.planning-number {
+  color: var(--d-gold);
+  font-size: 24px;
+  font-weight: 850;
+}
+
+.planning-icon {
+  width: 57px;
+  height: 57px;
+  display: grid;
+  place-items: center;
+  color: var(--d-gold);
+  background: #f8f3eb;
+  border-radius: 50%;
+}
+
+.planning-content h3 {
+  margin: 0 0 13px;
+  color: var(--d-navy);
+  font-size: 23px;
+}
+
+.planning-content > p {
+  margin: 0 0 17px;
+  color: var(--d-text);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.planning-content ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.planning-content li {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  color: #52606b;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.planning-content li svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--d-gold);
+}
+
+/* IMAGE BREAK */
+
+.diaspora-image-break {
+  position: relative;
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+  background: url("https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2000&q=90") center 50% / cover no-repeat;
+}
+
+.diaspora-image-break-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(7,28,42,0.94), rgba(7,28,42,0.45));
+}
+
+.diaspora-image-break-content {
+  position: relative;
+  padding: 80px 0;
+  color: #fff;
+}
+
+.diaspora-image-break-content h2 {
+  margin: 0 0 30px;
+  font-size: clamp(36px, 5vw, 58px);
+  letter-spacing: -1.7px;
+  line-height: 1.13;
+}
+
+/* REMOTE MANAGEMENT */
+
+.diaspora-remote {
+  background: #fff;
+}
+
+.diaspora-remote-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: 85px;
+}
+
+.diaspora-remote-visual {
+  position: relative;
+  padding-bottom: 35px;
+}
+
+.diaspora-remote-visual > img {
+  width: 100%;
+  height: 560px;
+  display: block;
+  object-fit: cover;
+}
+
+.remote-floating-card {
+  position: absolute;
+  right: -25px;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 22px;
+  background: var(--d-navy);
+  color: #fff;
+}
+
+.remote-floating-card > svg {
+  color: var(--d-gold-light);
+}
+
+.remote-floating-card span {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.remote-floating-card strong {
+  font-size: 13px;
+}
+
+.remote-floating-card small {
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+}
+
+.diaspora-remote-copy > p {
+  margin-bottom: 27px;
+}
+
+.diaspora-remote-benefits {
+  display: grid;
+  gap: 21px;
+}
+
+.remote-benefit {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.remote-benefit > span {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--d-gold);
+  background: #f8f3eb;
+}
+
+.remote-benefit h3 {
+  margin: 0 0 5px;
+  color: var(--d-navy);
+  font-size: 15px;
+}
+
+.remote-benefit p {
+  margin: 0;
+  color: var(--d-text);
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+/* MISTAKES */
+
+.diaspora-mistakes {
+  background: #f4f5f6;
+}
+
+.diaspora-mistakes-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 85px;
+  align-items: center;
+}
+
+.diaspora-btn-dark {
+  margin-top: 15px;
+  background: var(--d-navy);
+  color: #fff;
+}
+
+.diaspora-btn-dark:hover {
+  background: var(--d-gold);
+  color: var(--d-dark);
+}
+
+.diaspora-mistake-list {
+  display: grid;
+  gap: 0;
+  background: #fff;
+  padding: 10px 28px;
+}
+
+.diaspora-mistake-list > div {
+  display: grid;
+  grid-template-columns: 25px 1fr 25px;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--d-border);
+}
+
+.diaspora-mistake-list > div:last-child {
+  border-bottom: 0;
+}
+
+.diaspora-mistake-list svg {
+  color: var(--d-gold);
+}
+
+.diaspora-mistake-list span {
+  color: var(--d-text);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.diaspora-mistake-list small {
+  color: #b5bdc3;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* CHECKLIST */
+
+.diaspora-checklist {
+  background: var(--d-navy);
+  color: #fff;
+}
+
+.diaspora-checklist-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 80px;
+}
+
+.checklist-heading h2 {
+  color: #fff;
+}
+
+.checklist-heading h2 span {
+  color: var(--d-gold-light);
+}
+
+.checklist-heading p {
+  color: rgba(255,255,255,0.72);
+}
+
+.checklist-heading > svg {
+  margin-top: 25px;
+  color: rgba(227,193,139,0.55);
+}
+
+.checklist-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  gap: 0 25px;
+}
+
+.checklist-items > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.checklist-items svg {
+  flex-shrink: 0;
+  color: var(--d-gold-light);
+}
+
+.checklist-items span {
+  color: rgba(255,255,255,0.88);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* PROCESS */
+
+.diaspora-process {
+  background: #fff;
+}
+
+.diaspora-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 45px 30px;
+}
+
+.diaspora-process-grid article {
+  position: relative;
+  padding-top: 20px;
+}
+
+.diaspora-process-grid article > span {
+  color: var(--d-gold);
+  font-size: 34px;
+  font-weight: 850;
+}
+
+.process-line {
+  width: 100%;
+  height: 1px;
+  margin: 20px 0 23px;
+  background: var(--d-border);
+}
+
+.process-line::after {
+  content: "";
+  display: block;
+  width: 45px;
+  height: 3px;
+  background: var(--d-gold);
+}
+
+.diaspora-process-grid h3 {
+  margin: 0 0 12px;
+  color: var(--d-navy);
+  font-size: 18px;
+}
+
+.diaspora-process-grid p {
+  margin: 0;
+  color: var(--d-text);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* FAQ */
+
+.diaspora-faq {
+  background: #f5f6f7;
+}
+
+.diaspora-faq-grid {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.diaspora-faq-heading a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  color: var(--d-navy);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.diaspora-faq-list {
+  background: #fff;
+  padding: 10px 28px;
+}
+
+.diaspora-faq-item {
+  border-bottom: 1px solid var(--d-border);
+}
+
+.diaspora-faq-item:last-child {
+  border-bottom: 0;
+}
+
+.diaspora-faq-item > button {
+  width: 100%;
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 15px 0;
+  border: 0;
+  background: transparent;
+  color: var(--d-navy);
+  text-align: left;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.diaspora-faq-item > button svg {
+  flex-shrink: 0;
+  color: var(--d-gold);
+  transition: transform 0.25s ease;
+}
+
+.diaspora-faq-item.active > button svg {
+  transform: rotate(180deg);
+}
+
+.diaspora-faq-answer {
+  padding: 0 30px 20px 0;
+}
+
+.diaspora-faq-answer p {
+  margin: 0;
+  color: var(--d-text);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* ENQUIRY */
+
+.diaspora-enquiry {
+  background: #fff;
+}
+
+.diaspora-enquiry-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 75px;
+  align-items: start;
+}
+
+.diaspora-enquiry-copy {
+  padding-top: 20px;
+}
+
+.enquiry-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.enquiry-contact-item > svg {
+  color: var(--d-gold);
+  flex-shrink: 0;
+}
+
+.enquiry-contact-item span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.enquiry-contact-item small {
+  color: var(--d-muted);
+  font-size: 11px;
+}
+
+.enquiry-contact-item a,
+.enquiry-contact-item strong {
+  color: var(--d-navy);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.6;
+}
+
+.diaspora-whatsapp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 35px;
+  padding: 14px 19px;
+  background: #e9f5ed;
+  color: #16703b;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.diaspora-form {
+  padding: 38px;
+  background: #f5f6f7;
+  border: 1px solid #e9ecef;
+}
+
+.form-heading {
+  margin-bottom: 27px;
+}
+
+.form-heading > span {
+  color: var(--d-gold);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 2px;
+}
+
+.form-heading h3 {
+  margin: 10px 0;
+  color: var(--d-navy);
+  font-size: 27px;
+}
+
+.form-heading p {
+  margin: 0;
+  color: var(--d-text);
+  font-size: 12px;
+}
+
+.diaspora-form label {
+  display: block;
+  margin-bottom: 17px;
+  color: #263b4b;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.diaspora-form input,
+.diaspora-form select,
+.diaspora-form textarea {
+  width: 100%;
+  display: block;
+  margin-top: 8px;
+  padding: 14px 13px;
+  border: 1px solid #dfe4e8;
+  border-radius: 0;
+  outline: none;
+  background: #fff;
+  color: #243847;
+  font: inherit;
+  font-size: 12px;
+  transition: border-color 0.2s ease;
+}
+
+.diaspora-form input:focus,
+.diaspora-form select:focus,
+.diaspora-form textarea:focus {
+  border-color: var(--d-gold);
+}
+
+.diaspora-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.diaspora-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.diaspora-form button {
+  width: 100%;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 0;
+  background: var(--d-navy);
+  color: #fff;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.diaspora-form button:hover {
+  background: var(--d-gold);
+  color: var(--d-dark);
+}
+
+.diaspora-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.diaspora-feedback {
+  margin: 0 0 17px;
+  padding: 13px;
+  background: #fff;
+  border-left: 3px solid var(--d-gold);
+  color: var(--d-navy);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.form-privacy {
+  display: block;
+  margin-top: 13px;
+  color: var(--d-muted);
+  font-size: 10px;
+  text-align: center;
+}
+
+/* FINAL CTA */
+
+.diaspora-final-cta {
+  padding: 85px 0;
+  background: var(--d-dark);
+  text-align: center;
+  color: #fff;
+}
+
+.diaspora-final-cta > div > span {
+  color: var(--d-gold-light);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 2.5px;
+}
+
+.diaspora-final-cta h2 {
+  max-width: 800px;
+  margin: 20px auto;
+  color: #fff;
+  font-size: clamp(32px, 4.5vw, 52px);
+  letter-spacing: -1.5px;
+  line-height: 1.2;
+}
+
+.diaspora-final-cta p {
+  margin-bottom: 27px;
+  color: rgba(255,255,255,0.7);
+  font-size: 13px;
+}
+
+/* FOOTER */
+
+.diaspora-footer {
+  background: #071722;
+  color: #fff;
+}
+
+.diaspora-footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr 1fr;
+  gap: 75px;
+  padding-top: 65px;
+  padding-bottom: 55px;
+}
+
+.footer-brand {
+  color: #fff;
+}
+
+.diaspora-footer-grid > div:first-child > p {
+  max-width: 350px;
+  margin: 22px 0 12px;
+  color: rgba(255,255,255,0.65);
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+.footer-tagline {
+  color: var(--d-gold-light);
+  font-size: 12px;
+}
+
+.diaspora-footer-grid h3 {
+  margin: 0 0 23px;
+  color: #fff;
+  font-size: 15px;
+}
+
+.diaspora-footer-grid > div:not(:first-child) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 13px;
+}
+
+.diaspora-footer-grid > div:not(:first-child) a,
+.diaspora-footer-grid > div:not(:first-child) p {
+  margin: 0;
+  color: rgba(255,255,255,0.68);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.diaspora-footer-grid a:hover {
+  color: var(--d-gold-light);
+}
+
+.diaspora-footer-bottom {
+  min-height: 65px;
+  padding: 15px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.diaspora-footer-bottom p,
+.diaspora-footer-bottom a {
+  margin: 0;
+  color: rgba(255,255,255,0.55);
+  font-size: 11px;
+}
+
+/* WHATSAPP */
+
+.diaspora-floating-whatsapp {
+  position: fixed;
+  z-index: 150;
+  right: 25px;
+  bottom: 25px;
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #20bd65;
+  color: #fff;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.25s ease;
+}
+
+.diaspora-floating-whatsapp:hover {
+  transform: translateY(-5px);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+  .diaspora-nav {
+    gap: 19px;
+  }
+
+  .diaspora-header-contact {
+    display: none;
+  }
+
+  .diaspora-intro-grid,
+  .diaspora-remote-grid,
+  .diaspora-mistakes-grid,
+  .diaspora-checklist-grid,
+  .diaspora-faq-grid,
+  .diaspora-enquiry-grid {
+    gap: 45px;
+  }
+
+  .diaspora-footer-grid {
+    gap: 35px;
+  }
+}
+
+@media (max-width: 760px) {
+  .section-pad {
+    padding: 75px 0;
+  }
+
+  .diaspora-container {
+    width: min(100% - 36px, 600px);
+  }
+
+  .diaspora-nav-container {
+    min-height: 75px;
+    width: calc(100% - 36px);
+  }
+
+  .diaspora-brand img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .diaspora-brand strong {
+    font-size: 16px;
+  }
+
+  .diaspora-menu-button {
+    display: block;
+  }
+
+  .diaspora-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: none;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 20px 20px;
+    background: #fff;
+    box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+  }
+
+  .diaspora-nav.open {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .diaspora-nav a {
+    padding: 15px 5px;
+    border-bottom: 1px solid var(--d-border);
+  }
+
+  .diaspora-hero {
+    min-height: 650px;
+  }
+
+  .diaspora-hero-overlay {
+    background: linear-gradient(90deg, rgba(5,22,34,0.93), rgba(5,22,34,0.63));
+  }
+
+  .diaspora-hero-content {
+    width: calc(100% - 40px);
+    padding: 90px 0 110px;
+  }
+
+  .diaspora-hero h1 {
+    font-size: clamp(43px, 10vw, 64px);
+    letter-spacing: -2px;
+  }
+
+  .diaspora-hero-content > p {
+    font-size: 14px;
+  }
+
+  .diaspora-intro-grid,
+  .diaspora-remote-grid,
+  .diaspora-mistakes-grid,
+  .diaspora-checklist-grid,
+  .diaspora-faq-grid,
+  .diaspora-enquiry-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .diaspora-intro-visual > img {
+    height: 350px;
+  }
+
+  .diaspora-risk-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .diaspora-planning-card {
+    grid-template-columns: 42px 50px 1fr;
+    gap: 12px;
+  }
+
+  .planning-number {
+    font-size: 19px;
+  }
+
+  .planning-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .planning-icon svg {
+    width: 23px;
+  }
+
+  .planning-content h3 {
+    font-size: 19px;
+  }
+
+  .planning-content ul {
+    grid-template-columns: 1fr;
+  }
+
+  .diaspora-remote-visual > img {
+    height: 400px;
+  }
+
+  .diaspora-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .checklist-items {
+    grid-template-columns: 1fr;
+  }
+
+  .diaspora-enquiry-grid {
+    gap: 35px;
+  }
+
+  .diaspora-footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .diaspora-footer-grid > div:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .diaspora-hero {
+    min-height: 620px;
+  }
+
+  .diaspora-eyebrow {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .diaspora-hero h1 {
+    font-size: 43px;
+  }
+
+  .diaspora-hero-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .diaspora-btn {
+    width: 100%;
+  }
+
+  .diaspora-risk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .diaspora-risk-card {
+    min-height: auto;
+  }
+
+  .diaspora-planning-card {
+    grid-template-columns: 38px 1fr;
+  }
+
+  .planning-icon {
+    display: none;
+  }
+
+  .planning-content {
+    grid-column: 2;
+  }
+
+  .diaspora-process-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .diaspora-form {
+    padding: 23px 17px;
+  }
+
+  .diaspora-form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .diaspora-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .diaspora-footer-grid > div:first-child {
+    grid-column: auto;
+  }
+
+  .diaspora-footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .remote-floating-card {
+    right: -5px;
+  }
+
+  .diaspora-floating-whatsapp {
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diaspora-page *,
+  .diaspora-page *::before,
+  .diaspora-page *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =========================================================
+   DUISBURG DEVELOPERS – DIASPORA PAGE
+   ADVANCED ANIMATION UPGRADE
+========================================================= */
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+.diaspora-page {
+  overflow: hidden;
+}
+
+/* =========================================================
+   1. HERO ANIMATIONS
+========================================================= */
+
+.diaspora-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.diaspora-hero-image {
+  animation: heroImageZoom 18s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+.diaspora-hero-overlay {
+  animation: overlayReveal 1.8s ease forwards;
+}
+
+.diaspora-hero-content {
+  animation: heroContentReveal 1.3s cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.diaspora-eyebrow {
+  animation: fadeInDown 1s ease .2s both;
+}
+
+.diaspora-hero-content h1 {
+  animation: fadeInUp 1.1s ease .35s both;
+}
+
+.diaspora-hero-content p {
+  animation: fadeInUp 1.1s ease .55s both;
+}
+
+.diaspora-hero-actions {
+  animation: fadeInUp 1.1s ease .75s both;
+}
+
+.diaspora-hero-note {
+  animation: fadeInUp 1.1s ease .95s both;
+}
+
+.diaspora-scroll {
+  animation: fadeInUp 1s ease 1.2s both, scrollPulse 2s ease-in-out 2s infinite;
+}
+
+@keyframes heroImageZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.13);
+  }
+}
+
+@keyframes overlayReveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes heroContentReveal {
+  from {
+    opacity: 0;
+    transform: translateY(55px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   2. GENERAL ANIMATION KEYFRAMES
+========================================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-55px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(55px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes scrollPulse {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@keyframes softGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(201, 158, 76, 0);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(201, 158, 76, .22);
+  }
+}
+
+@keyframes lineGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* =========================================================
+   3. SCROLL-TRIGGERED SECTION ANIMATIONS
+   Supported in modern browsers such as current Chrome.
+========================================================= */
+
+@supports (animation-timeline: view()) {
+
+  .diaspora-intro,
+  .diaspora-challenges,
+  .diaspora-planning,
+  .diaspora-remote,
+  .diaspora-mistakes,
+  .diaspora-checklist,
+  .diaspora-process,
+  .diaspora-faq,
+  .diaspora-enquiry {
+    animation: sectionReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+
+  @keyframes sectionReveal {
+    from {
+      opacity: .15;
+      transform: translateY(65px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .diaspora-risk-card,
+  .diaspora-planning-card,
+  .remote-benefit,
+  .diaspora-process-grid article,
+  .diaspora-mistake-list > div,
+  .checklist-items > div,
+  .diaspora-faq-item {
+    animation: cardReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+
+  @keyframes cardReveal {
+    from {
+      opacity: .1;
+      transform: translateY(45px) scale(.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* =========================================================
+   4. SECTION HEADINGS
+========================================================= */
+
+.diaspora-section-heading,
+.diaspora-intro-copy,
+.diaspora-remote-copy,
+.diaspora-mistakes-grid > div:first-child,
+.checklist-heading,
+.diaspora-faq-heading,
+.diaspora-enquiry-copy {
+  animation: fadeInUp 1s ease both;
+}
+
+.diaspora-label {
+  display: inline-block;
+  transition: color .3s ease, letter-spacing .3s ease;
+}
+
+.diaspora-label:hover {
+  letter-spacing: 2px;
+  color: var(--diaspora-gold);
+}
+
+.diaspora-section-heading h2,
+.diaspora-intro-copy h2,
+.diaspora-remote-copy h2,
+.diaspora-mistakes-grid h2,
+.checklist-heading h2,
+.diaspora-faq-heading h2,
+.diaspora-enquiry-copy h2 {
+  transition: color .35s ease;
+}
+
+/* =========================================================
+   5. CHALLENGE CARDS
+========================================================= */
+
+.diaspora-risk-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform .45s cubic-bezier(.2, .8, .2, 1),
+    box-shadow .45s ease,
+    border-color .35s ease;
+}
+
+.diaspora-risk-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--diaspora-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s ease;
+}
+
+.diaspora-risk-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 22px 45px rgba(0, 0, 0, .12);
+  border-color: var(--diaspora-gold);
+}
+
+.diaspora-risk-card:hover::before {
+  transform: scaleX(1);
+}
+
+.diaspora-risk-top svg {
+  transition: transform .45s ease, color .35s ease;
+}
+
+.diaspora-risk-card:hover .diaspora-risk-top svg {
+  transform: rotate(-10deg) scale(1.2);
+  color: var(--diaspora-gold);
+}
+
+/* =========================================================
+   6. PLANNING CARDS
+========================================================= */
+
+.diaspora-planning-card {
+  position: relative;
+  transition:
+    transform .45s ease,
+    box-shadow .45s ease;
+}
+
+.diaspora-planning-card:hover {
+  transform: translateX(10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .1);
+}
+
+.planning-number {
+  transition: color .35s ease, transform .35s ease;
+}
+
+.diaspora-planning-card:hover .planning-number {
+  color: var(--diaspora-gold);
+  transform: scale(1.12);
+}
+
+.planning-icon {
+  transition:
+    transform .45s cubic-bezier(.2, .8, .2, 1),
+    background .35s ease;
+}
+
+.diaspora-planning-card:hover .planning-icon {
+  transform: rotate(8deg) scale(1.08);
+}
+
+.planning-content li {
+  transition: transform .3s ease, color .3s ease;
+}
+
+.planning-content li:hover {
+  transform: translateX(7px);
+  color: var(--diaspora-gold);
+}
+
+/* =========================================================
+   7. IMAGE HOVER EFFECTS
+========================================================= */
+
+.diaspora-intro-visual,
+.diaspora-remote-visual {
+  overflow: hidden;
+  position: relative;
+}
+
+.diaspora-intro-visual img,
+.diaspora-remote-visual img {
+  transition: transform 1s cubic-bezier(.2, .8, .2, 1);
+}
+
+.diaspora-intro-visual:hover img,
+.diaspora-remote-visual:hover img {
+  transform: scale(1.09);
+}
+
+.diaspora-image-caption,
+.remote-floating-card {
+  transition: transform .45s ease, box-shadow .45s ease;
+}
+
+.diaspora-intro-visual:hover .diaspora-image-caption,
+.diaspora-remote-visual:hover .remote-floating-card {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, .18);
+}
+
+/* =========================================================
+   8. IMAGE BREAK PARALLAX FEEL
+========================================================= */
+
+.diaspora-image-break {
+  position: relative;
+  overflow: hidden;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+.diaspora-image-break-content {
+  animation: fadeInUp 1.2s ease both;
+}
+
+.diaspora-image-break h2 {
+  transition: transform .4s ease;
+}
+
+.diaspora-image-break:hover h2 {
+  transform: translateY(-5px);
+}
+
+/* =========================================================
+   9. REMOTE BENEFITS
+========================================================= */
+
+.remote-benefit {
+  transition: transform .35s ease;
+}
+
+.remote-benefit:hover {
+  transform: translateX(10px);
+}
+
+.remote-benefit > span {
+  transition:
+    transform .4s ease,
+    background .4s ease,
+    color .4s ease;
+}
+
+.remote-benefit:hover > span {
+  transform: rotate(12deg) scale(1.1);
+  background: var(--diaspora-gold);
+  color: #fff;
+}
+
+/* =========================================================
+   10. MISTAKE LIST
+========================================================= */
+
+.diaspora-mistake-list > div {
+  transition:
+    transform .35s ease,
+    background .35s ease,
+    padding .35s ease;
+}
+
+.diaspora-mistake-list > div:hover {
+  transform: translateX(8px);
+  background: rgba(201, 158, 76, .09);
+}
+
+.diaspora-mistake-list svg {
+  transition: transform .35s ease;
+}
+
+.diaspora-mistake-list > div:hover svg {
+  transform: rotate(-12deg) scale(1.15);
+}
+
+/* =========================================================
+   11. CHECKLIST
+========================================================= */
+
+.checklist-items > div {
+  transition: transform .3s ease, background .3s ease;
+}
+
+.checklist-items > div:hover {
+  transform: translateX(8px);
+  background: rgba(201, 158, 76, .08);
+}
+
+.checklist-items svg {
+  transition: transform .35s ease;
+}
+
+.checklist-items > div:hover svg {
+  transform: scale(1.2);
+}
+
+/* =========================================================
+   12. PROCESS TIMELINE
+========================================================= */
+
+.diaspora-process-grid article {
+  transition: transform .4s ease;
+}
+
+.diaspora-process-grid article:hover {
+  transform: translateY(-10px);
+}
+
+.diaspora-process-grid article > span {
+  transition:
+    color .35s ease,
+    transform .35s ease;
+}
+
+.diaspora-process-grid article:hover > span {
+  color: var(--diaspora-gold);
+  transform: scale(1.15);
+}
+
+.process-line {
+  transform-origin: left;
+}
+
+.diaspora-process-grid article:hover .process-line {
+  animation: lineGrow .5s ease both;
+}
+
+/* =========================================================
+   13. FAQ ACCORDION
+========================================================= */
+
+.diaspora-faq-item {
+  transition:
+    box-shadow .35s ease,
+    transform .35s ease;
+}
+
+.diaspora-faq-item:hover {
+  transform: translateX(5px);
+}
+
+.diaspora-faq-item button svg {
+  transition: transform .4s ease;
+}
+
+.diaspora-faq-item.active button svg {
+  transform: rotate(180deg);
+}
+
+.diaspora-faq-answer {
+  animation: faqReveal .4s ease both;
+  transform-origin: top;
+}
+
+@keyframes faqReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   14. BUTTON ANIMATIONS
+========================================================= */
+
+.diaspora-btn,
+.diaspora-header-contact,
+.diaspora-whatsapp-link,
+.diaspora-form button {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    background .35s ease;
+}
+
+.diaspora-btn::before,
+.diaspora-form button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    110deg,
+    transparent,
+    rgba(255, 255, 255, .3),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left .65s ease;
+}
+
+.diaspora-btn:hover::before,
+.diaspora-form button:hover::before {
+  left: 150%;
+}
+
+.diaspora-btn:hover,
+.diaspora-header-contact:hover,
+.diaspora-whatsapp-link:hover,
+.diaspora-form button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, .16);
+}
+
+.diaspora-btn:active,
+.diaspora-form button:active {
+  transform: scale(.97);
+}
+
+/* =========================================================
+   15. ENQUIRY FORM
+========================================================= */
+
+.diaspora-form {
+  animation: fadeInRight 1s ease both;
+  transition: box-shadow .4s ease;
+}
+
+.diaspora-form:focus-within {
+  box-shadow: 0 20px 55px rgba(0, 0, 0, .12);
+}
+
+.diaspora-form input,
+.diaspora-form select,
+.diaspora-form textarea {
+  transition:
+    border-color .3s ease,
+    box-shadow .3s ease,
+    transform .3s ease;
+}
+
+.diaspora-form input:focus,
+.diaspora-form select:focus,
+.diaspora-form textarea:focus {
+  outline: none;
+  border-color: var(--diaspora-gold);
+  box-shadow: 0 0 0 4px rgba(201, 158, 76, .13);
+  transform: translateY(-2px);
+}
+
+.diaspora-form button {
+  transition: all .35s ease;
+}
+
+.diaspora-feedback {
+  animation: fadeInUp .45s ease both;
+}
+
+/* =========================================================
+   16. FINAL CALL TO ACTION
+========================================================= */
+
+.diaspora-final-cta {
+  position: relative;
+  overflow: hidden;
+}
+
+.diaspora-final-cta::before,
+.diaspora-final-cta::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 50%;
+  animation: orbit 12s linear infinite;
+}
+
+.diaspora-final-cta::before {
+  top: -140px;
+  left: -100px;
+}
+
+.diaspora-final-cta::after {
+  right: -100px;
+  bottom: -180px;
+  animation-direction: reverse;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  to {
+    transform: rotate(360deg) scale(1.12);
+  }
+}
+
+.diaspora-final-cta h2,
+.diaspora-final-cta p,
+.diaspora-final-cta a {
+  animation: fadeInUp 1s ease both;
+}
+
+.diaspora-final-cta p {
+  animation-delay: .2s;
+}
+
+.diaspora-final-cta a {
+  animation-delay: .4s;
+}
+
+/* =========================================================
+   17. FOOTER
+========================================================= */
+
+.diaspora-footer-grid > div {
+  animation: fadeInUp .9s ease both;
+}
+
+.diaspora-footer-grid > div:nth-child(2) {
+  animation-delay: .15s;
+}
+
+.diaspora-footer-grid > div:nth-child(3) {
+  animation-delay: .3s;
+}
+
+.diaspora-footer a {
+  transition: color .3s ease, transform .3s ease;
+}
+
+.diaspora-footer a:hover {
+  color: var(--diaspora-gold);
+  transform: translateX(5px);
+}
+
+/* =========================================================
+   18. FLOATING WHATSAPP
+========================================================= */
+
+.diaspora-floating-whatsapp {
+  animation: whatsappPulse 2.2s ease-in-out infinite;
+  transition: transform .35s ease;
+}
+
+.diaspora-floating-whatsapp:hover {
+  animation-play-state: paused;
+  transform: scale(1.15) rotate(8deg);
+}
+
+@keyframes whatsappPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, .4);
+  }
+  50% {
+    box-shadow: 0 0 0 13px rgba(37, 211, 102, 0);
+  }
+}
+
+/* =========================================================
+   19. NAVIGATION
+========================================================= */
+
+.diaspora-nav a {
+  position: relative;
+  transition: color .3s ease;
+}
+
+.diaspora-nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -7px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--diaspora-gold);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform .35s ease;
+}
+
+.diaspora-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.diaspora-menu-button {
+  transition: transform .3s ease;
+}
+
+.diaspora-menu-button:hover {
+  transform: rotate(90deg);
+}
+
+/* =========================================================
+   20. RESPONSIVE & ACCESSIBILITY
+========================================================= */
+
+@media (max-width: 768px) {
+  .diaspora-image-break {
+    background-attachment: scroll;
+  }
+
+  .diaspora-planning-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .diaspora-risk-card:hover,
+  .diaspora-process-grid article:hover {
+    transform: translateY(-5px);
+  }
+
+  .diaspora-final-cta::before,
+  .diaspora-final-cta::after {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .diaspora-page *,
+  .diaspora-page *::before,
+  .diaspora-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ==========================================
+   DIASPORA PAGE – PREMIUM ANIMATION PACK 2
+========================================== */
+
+/* GLOBAL */
+.diaspora-page {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.diaspora-page section {
+  position: relative;
+}
+
+.diaspora-page a,
+.diaspora-page button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ANIMATED SECTION BACKGROUND */
+.diaspora-page section:not(.diaspora-hero):not(.diaspora-final-cta) {
+  background-size: 200% 200%;
+  animation: diasporaBackground 14s ease infinite;
+}
+
+@keyframes diasporaBackground {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* HERO PREMIUM EFFECTS */
+.diaspora-hero {
+  isolation: isolate;
+}
+
+.diaspora-hero::before {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 50%;
+  top: 10%;
+  right: -150px;
+  animation: heroOrbit 18s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.diaspora-hero::after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 50%;
+  top: 25%;
+  right: -90px;
+  animation: heroOrbit 12s linear infinite reverse;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes heroOrbit {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1.08); }
+}
+
+/* HERO TEXT */
+.diaspora-hero h1 {
+  animation: heroTitleReveal 1.1s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.diaspora-hero p {
+  animation: fadeInUp 1s .25s both;
+}
+
+.diaspora-hero .btn,
+.diaspora-hero a {
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+
+@keyframes heroTitleReveal {
+  from {
+    opacity: 0;
+    transform: translateY(45px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* SECTION HEADINGS */
+.diaspora-section-heading h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.diaspora-section-heading h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -12px;
+  width: 55px;
+  height: 3px;
+  border-radius: 10px;
+  background: var(--diaspora-accent, #c49a52);
+  transition: width .6s ease;
+}
+
+.diaspora-section-heading:hover h2::after {
+  width: 100%;
+}
+
+/* PREMIUM CARD HOVER */
+.diaspora-risk-card,
+.diaspora-planning-card,
+.diaspora-process-grid > *,
+.diaspora-remote > *,
+.diaspora-page .diaspora-checklist > * {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform .45s cubic-bezier(.2,.8,.2,1),
+    box-shadow .45s ease,
+    border-color .4s ease;
+}
+
+.diaspora-risk-card::before,
+.diaspora-planning-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(255,255,255,.12) 50%,
+    transparent 80%
+  );
+  transform: translateX(-120%);
+  transition: transform .8s ease;
+  pointer-events: none;
+}
+
+.diaspora-risk-card:hover::before,
+.diaspora-planning-card:hover::before {
+  transform: translateX(120%);
+}
+
+.diaspora-risk-card:hover,
+.diaspora-planning-card:hover,
+.diaspora-process-grid > *:hover,
+.diaspora-remote > *:hover,
+.diaspora-page .diaspora-checklist > *:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 22px 45px rgba(0,0,0,.13);
+  border-color: rgba(196,154,82,.65);
+}
+
+/* ICON ANIMATIONS */
+.diaspora-risk-card svg,
+.diaspora-planning-card svg,
+.diaspora-process-grid svg {
+  transition: transform .5s cubic-bezier(.2,.8,.2,1);
+}
+
+.diaspora-risk-card:hover svg,
+.diaspora-planning-card:hover svg,
+.diaspora-process-grid > *:hover svg {
+  transform: scale(1.2) rotate(-8deg);
+}
+
+/* IMAGE HOVER EFFECT */
+.diaspora-page img {
+  transition:
+    transform .8s cubic-bezier(.2,.8,.2,1),
+    filter .6s ease;
+}
+
+.diaspora-page img:hover {
+  transform: scale(1.045);
+  filter: saturate(1.12);
+}
+
+/* IMAGE BREAK */
+.diaspora-image-break {
+  position: relative;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+}
+
+.diaspora-image-break::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(8,22,35,.88),
+    rgba(8,22,35,.35)
+  );
+  transition: opacity .5s ease;
+  pointer-events: none;
+}
+
+.diaspora-image-break:hover::before {
+  opacity: .75;
+}
+
+/* PROCESS NUMBER EFFECT */
+.diaspora-process-grid {
+  counter-reset: diaspora-step;
+}
+
+.diaspora-process-grid > * {
+  counter-increment: diaspora-step;
+}
+
+.diaspora-process-grid > *::before {
+  content: "0" counter(diaspora-step);
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2.8rem;
+  font-weight: 800;
+  opacity: .07;
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
+}
+
+.diaspora-process-grid > *:hover::before {
+  opacity: .2;
+  transform: translateY(-5px);
+}
+
+/* FAQ ANIMATION */
+.diaspora-faq-item {
+  transition: border-color .35s ease, box-shadow .35s ease;
+}
+
+.diaspora-faq-item:hover {
+  border-color: rgba(196,154,82,.6);
+  box-shadow: 0 10px 25px rgba(0,0,0,.06);
+}
+
+.diaspora-faq-item button {
+  transition: color .3s ease;
+}
+
+.diaspora-faq-item button:hover {
+  color: var(--diaspora-accent, #c49a52);
+}
+
+/* FORM PREMIUM FOCUS */
+.diaspora-form input,
+.diaspora-form select,
+.diaspora-form textarea {
+  transition:
+    border-color .3s ease,
+    box-shadow .3s ease,
+    background .3s ease,
+    transform .3s ease;
+}
+
+.diaspora-form input:focus,
+.diaspora-form select:focus,
+.diaspora-form textarea:focus {
+  outline: none;
+  border-color: var(--diaspora-accent, #c49a52);
+  box-shadow: 0 0 0 4px rgba(196,154,82,.13);
+  transform: translateY(-2px);
+}
+
+/* BUTTON SHIMMER */
+.diaspora-page button,
+.diaspora-page .diaspora-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.diaspora-page button::after,
+.diaspora-page .diaspora-btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255,255,255,.25),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left .7s ease;
+  pointer-events: none;
+}
+
+.diaspora-page button:hover::after,
+.diaspora-page .diaspora-btn:hover::after {
+  left: 150%;
+}
+
+/* FINAL CTA GLOW */
+.diaspora-final-cta {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.diaspora-final-cta::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.13);
+  top: -250px;
+  right: -100px;
+  animation: heroOrbit 25s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.diaspora-final-cta::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.1);
+  bottom: -220px;
+  left: -100px;
+  animation: heroOrbit 20s linear infinite reverse;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* WHATSAPP BUTTON */
+.diaspora-floating-whatsapp {
+  animation: whatsappFloat 3s ease-in-out infinite;
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+
+.diaspora-floating-whatsapp:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 30px rgba(37,211,102,.35);
+}
+
+@keyframes whatsappFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* HEADER */
+.diaspora-header {
+  transition: background .4s ease, box-shadow .4s ease;
+}
+
+.diaspora-header a {
+  position: relative;
+  transition: color .3s ease;
+}
+
+.diaspora-header a:not(.diaspora-header-cta)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: var(--diaspora-accent, #c49a52);
+  transition: width .35s ease;
+}
+
+.diaspora-header a:hover::after {
+  width: 100%;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .diaspora-hero::before {
+    width: 260px;
+    height: 260px;
+    right: -160px;
+  }
+
+  .diaspora-hero::after {
+    width: 190px;
+    height: 190px;
+    right: -120px;
+  }
+
+  .diaspora-risk-card:hover,
+  .diaspora-planning-card:hover,
+  .diaspora-process-grid > *:hover,
+  .diaspora-remote > *:hover {
+    transform: translateY(-4px);
+  }
+
+  .diaspora-final-cta::before {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .diaspora-page *,
+  .diaspora-page *::before,
+  .diaspora-page *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}

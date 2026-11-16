@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import {
   LayoutDashboard,
@@ -24,6 +24,7 @@ import "./AdminDashboard.css";
 function AdminDashboard() {
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [stats, setStats] = useState({
     projects: 0,
@@ -32,6 +33,7 @@ function AdminDashboard() {
     enquiries: 0,
     diaspora: 0,
     team: 0,
+    testimonials: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -46,6 +48,7 @@ function AdminDashboard() {
       { key: "enquiries", table: "enquiries" },
       { key: "diaspora", table: "diaspora_enquiries" },
       { key: "team", table: "team_members" },
+      { key: "testimonials", table: "testimonials" },
     ];
 
     const results = await Promise.all(
@@ -88,31 +91,43 @@ function AdminDashboard() {
       title: "Total Projects",
       value: stats.projects,
       icon: <FolderKanban size={22} />,
+      path: "/admin/projects",
     },
     {
       title: "Services",
       value: stats.services,
       icon: <Wrench size={22} />,
+      path: "/admin/services",
     },
     {
       title: "Blog Posts",
       value: stats.blogs,
       icon: <FileText size={22} />,
+      path: "/admin/blogs",
     },
     {
       title: "General Enquiries",
       value: stats.enquiries,
       icon: <MessageSquare size={22} />,
+      path: "/admin/enquiries",
     },
     {
       title: "Diaspora Enquiries",
       value: stats.diaspora,
       icon: <Globe size={22} />,
+      path: "/admin/diaspora-enquiries",
     },
     {
       title: "Team Members",
       value: stats.team,
       icon: <Users size={22} />,
+      path: "/admin/team-members",
+    },
+    {
+      title: "Testimonials",
+      value: stats.testimonials,
+      icon: <Star size={22} />,
+      path: "/admin/testimonials",
     },
   ];
 
@@ -133,10 +148,12 @@ function AdminDashboard() {
         {
           label: "Services",
           icon: <Wrench size={18} />,
+          path: "/admin/services",
         },
         {
           label: "Blog Posts",
           icon: <FileText size={18} />,
+          path: "/admin/blogs",
         },
       ],
     },
@@ -146,18 +163,22 @@ function AdminDashboard() {
         {
           label: "Enquiries",
           icon: <MessageSquare size={18} />,
+          path: "/admin/enquiries",
         },
         {
-          label: "Diaspora",
+          label: "Diaspora Enquiries",
           icon: <Globe size={18} />,
+          path: "/admin/diaspora-enquiries",
         },
         {
           label: "Team Members",
           icon: <Users size={18} />,
+          path: "/admin/team-members",
         },
         {
           label: "Testimonials",
           icon: <Star size={18} />,
+          path: "/admin/testimonials",
         },
       ],
     },
@@ -167,6 +188,7 @@ function AdminDashboard() {
         {
           label: "Settings",
           icon: <Settings size={18} />,
+          path: null,
         },
       ],
     },
@@ -174,26 +196,21 @@ function AdminDashboard() {
 
   return (
     <div className="admin-dashboard">
-
       <aside className="admin-sidebar">
-
         <div className="admin-brand">
           <h2>DUISBURG</h2>
           <p>DEVELOPERS ADMIN</p>
         </div>
 
         <nav className="admin-nav">
-
           {menuGroups.map((group) => (
             <div key={group.heading}>
-
               <p className="admin-nav-label">
                 {group.heading}
               </p>
 
               {group.items.map((item) => {
-                const active =
-                  window.location.pathname === item.path;
+                const active = location.pathname === item.path;
 
                 return (
                   <div
@@ -209,7 +226,7 @@ function AdminDashboard() {
                     title={
                       item.path
                         ? `Open ${item.label}`
-                        : "Management module coming soon"
+                        : "Coming soon"
                     }
                     style={{
                       cursor: item.path ? "pointer" : "not-allowed",
@@ -220,22 +237,16 @@ function AdminDashboard() {
                   </div>
                 );
               })}
-
             </div>
           ))}
-
         </nav>
-
       </aside>
 
       <main className="admin-main">
-
         <header className="admin-topbar">
-
           <h2>Admin Dashboard</h2>
 
           <div className="admin-actions">
-
             <span className="admin-user">
               {user?.email}
             </span>
@@ -247,15 +258,11 @@ function AdminDashboard() {
               <LogOut size={15} />
               {" "}Logout
             </button>
-
           </div>
-
         </header>
 
         <section className="admin-content">
-
           <div className="admin-welcome">
-
             <h1>
               Welcome, {profile?.full_name || "Administrator"}
             </h1>
@@ -267,7 +274,6 @@ function AdminDashboard() {
             <p>
               Administrator role: <strong>{profile?.role}</strong>
             </p>
-
           </div>
 
           <div className="admin-actions" style={{ marginBottom: "20px" }}>
@@ -282,10 +288,14 @@ function AdminDashboard() {
           </div>
 
           <div className="admin-stats">
-
             {cards.map((card) => (
-              <div className="admin-stat-card" key={card.title}>
-
+              <div
+                className="admin-stat-card"
+                key={card.title}
+                onClick={() => navigate(card.path)}
+                style={{ cursor: "pointer" }}
+                title={`Manage ${card.title}`}
+              >
                 <div className="admin-stat-top">
                   <span>{card.title}</span>
 
@@ -299,33 +309,26 @@ function AdminDashboard() {
                 </h2>
 
                 <p>Records in database</p>
-
               </div>
             ))}
-
           </div>
 
           <div className="admin-section">
-
             <h3>Website Management</h3>
 
             <p>
               Your administrator dashboard is connected to Supabase.
-              You can now monitor your projects, services, blog posts,
-              general enquiries and diaspora enquiries.
+              You can manage projects, services, blog posts, enquiries,
+              diaspora enquiries, team members and testimonials.
             </p>
 
             <p>
-              The management sections will be activated one by one,
-              beginning with Projects Management.
+              Select any management section from the sidebar or click
+              a statistics card to open its module.
             </p>
-
           </div>
-
         </section>
-
       </main>
-
     </div>
   );
 }

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
   Plus,
@@ -11,12 +11,16 @@ import {
   FolderKanban,
   MapPin,
   Loader2,
+  Image as ImageIcon,
+  RotateCcw,
 } from "lucide-react";
 
 import { supabase } from "../../lib/supabase";
 import { uploadImage } from "../../utils/supabaseStorage";
 
 const BUCKET_NAME = "duisburg-media";
+const MAX_IMAGES = 8;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 function Projects() {
   const [projects, setProjects] = useState([]);
@@ -31,6 +35,11 @@ function Projects() {
   const [editingId, setEditingId] = useState(null);
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
+  const [removedImageIds, setRemovedImageIds] = useState([]);
+
+  const previewUrlsRef = useRef(new Set());
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -46,6 +55,27 @@ function Projects() {
   };
 
   const [form, setForm] = useState(emptyForm);
+
+  // CLEAN UP IMAGE PREVIEWS WHEN COMPONENT UNMOUNTS
+  useEffect(() => {
+    return () => {
+      previewUrlsRef.current.forEach((url) => {
+        URL.revokeObjectURL(url);
+      });
+
+      previewUrlsRef.current.clear();
+    };
+  }, []);
+
+  // REMOVE PREVIEW URLS
+  const clearSelectedImages = () => {
+    selectedImages.forEach((image) => {
+      URL.revokeObjectURL(image.preview);
+      previewUrlsRef.current.delete(image.preview);
+    });
+
+    setSelectedImages([]);
+  };
 
   // LOAD PROJECTS AND THEIR IMAGES
   const loadProjects = async () => {
@@ -111,9 +141,12 @@ function Projects() {
 
   // OPEN NEW PROJECT FORM
   const openNewForm = () => {
+    clearSelectedImages();
+
     setEditingId(null);
     setForm(emptyForm);
-    setSelectedImages([]);
+    setExistingImages([]);
+    setRemovedImageIds([]);
     setError("");
     setSuccess("");
     setShowForm(true);
@@ -121,6 +154,12 @@ function Projects() {
 
   // OPEN EDIT FORM
   const openEditForm = (project) => {
+    clearSelectedImages();
+
+    const images = projectImages.filter(
+      (image) => image.project_id === project.id
+    );
+
     setEditingId(project.id);
 
     setForm({
@@ -134,10 +173,114 @@ function Projects() {
       completion_date: project.completion_date || "",
     });
 
-    setSelectedImages([]);
+    setExistingImages(images);
+    setRemovedImageIds([]);
     setError("");
     setSuccess("");
     setShowForm(true);
+  };
+
+  // ADD SELECTED IMAGE FILES
+  const handleImageSelection = (e) => {
+    const files = Array.from(e.target.files || []);
+
+    const availableSlots =
+      MAX_IMAGES -
+      existingImages.filter(
+        (image) => !removedImageIds.includes(image.id)
+      ).length -
+      selectedImages.length;
+
+    const validFiles = [];
+    const invalidFiles = [];
+
+    files.forEach((file) => {
+      const validType = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+      ].includes(file.type);
+
+      if (!validType || file.size > MAX_FILE_SIZE) {
+        invalidFiles.push(file.name);
+      } else {
+        validFiles.push(file);
+      }
+    });
+
+    if (invalidFiles.length > 0) {
+      setError(
+        "Some files were skipped. Only JPG, PNG and WebP images under 5MB are allowed."
+      );
+    } else {
+      setError("");
+    }
+
+    if (validFiles.length > availableSlots) {
+      setError(
+        `You can add only ${availableSlots} more image(s). Maximum is ${MAX_IMAGES} images per project.`
+      );
+    }
+
+    const filesToAdd = validFiles.slice(0, Math.max(0, availableSlots));
+
+    const newImages = filesToAdd.map((file) => {
+      const preview = URL.createObjectURL(file);
+
+      previewUrlsRef.current.add(preview);
+
+      return {
+        id: `${Date.now()}-${Math.random()}`,
+        file,
+        preview,
+      };
+    });
+
+    setSelectedImages((previous) => [...previous, ...newImages]);
+
+    e.target.value = "";
+  };
+
+  // REMOVE A NEWLY SELECTED IMAGE
+  const removeSelectedImage = (imageId) => {
+    const image = selectedImages.find(
+      (item) => item.id === imageId
+    );
+
+    if (image) {
+      URL.revokeObjectURL(image.preview);
+      previewUrlsRef.current.delete(image.preview);
+    }
+
+    setSelectedImages((previous) =>
+      previous.filter((item) => item.id !== imageId)
+    );
+  };
+
+  // MARK AN EXISTING IMAGE FOR REMOVAL
+  const markImageForRemoval = (imageId) => {
+    setRemovedImageIds((previous) => [...previous, imageId]);
+  };
+
+  // RESTORE AN IMAGE MARKED FOR REMOVAL
+  const restoreImage = (imageId) => {
+    setRemovedImageIds((previous) =>
+      previous.filter((id) => id !== imageId)
+    );
+  };
+
+  // CLOSE FORM WITHOUT SAVING
+  const closeForm = () => {
+    if (saving) return;
+
+    clearSelectedImages();
+
+    setShowForm(false);
+    setEditingId(null);
+    setForm(emptyForm);
+    setExistingImages([]);
+    setRemovedImageIds([]);
+    setError("");
   };
 
   // SAVE PROJECT
@@ -153,6 +296,16 @@ function Projects() {
         throw new Error("Project title is required.");
       }
 
+      const remainingImages = existingImages.filter(
+        (image) => !removedImageIds.includes(image.id)
+      );
+
+      if (remainingImages.length + selectedImages.length > MAX_IMAGES) {
+        throw new Error(
+          `A project can have a maximum of ${MAX_IMAGES} photographs.`
+        );
+      }
+
       const projectData = {
         ...form,
         title: form.title.trim(),
@@ -165,47 +318,79 @@ function Projects() {
 
       // UPDATE EXISTING PROJECT
       if (editingId) {
-        const { error } = await supabase
+        const { error: updateError } = await supabase
           .from("projects")
           .update(projectData)
           .eq("id", editingId);
 
-        if (error) throw error;
+        if (updateError) throw updateError;
       } else {
         // CREATE NEW PROJECT
-        const { data, error } = await supabase
+        const { data, error: insertError } = await supabase
           .from("projects")
           .insert([projectData])
           .select()
           .single();
 
-        if (error) throw error;
+        if (insertError) throw insertError;
 
         projectId = data.id;
       }
 
-      // UPLOAD IMAGES TO SUPABASE STORAGE
+      // UPLOAD NEW PHOTOGRAPHS
       if (selectedImages.length > 0) {
         const uploadedImages = await Promise.all(
-          selectedImages.map((file) =>
-            uploadImage(file, "projects")
+          selectedImages.map((image) =>
+            uploadImage(image.file, "projects")
           )
         );
+
+        const nextOrder = remainingImages.length;
 
         const imageRecords = uploadedImages.map((image, index) => ({
           project_id: projectId,
           image_url: image.url,
           storage_path: image.path,
           alt_text: form.title,
-          display_order: index,
+          display_order: nextOrder + index,
         }));
 
         const { error: imageError } = await supabase
           .from("project_images")
           .insert(imageRecords);
 
-        if (imageError) {
-          throw imageError;
+        if (imageError) throw imageError;
+      }
+
+      // DELETE DATABASE RECORDS FOR REMOVED PHOTOGRAPHS
+      if (removedImageIds.length > 0) {
+        const imagesToRemove = existingImages.filter(
+          (image) => removedImageIds.includes(image.id)
+        );
+
+        const { error: deleteError } = await supabase
+          .from("project_images")
+          .delete()
+          .in("id", removedImageIds);
+
+        if (deleteError) throw deleteError;
+
+        // REMOVE ACTUAL FILES FROM SUPABASE STORAGE
+        const storagePaths = imagesToRemove
+          .map((image) => image.storage_path)
+          .filter(Boolean);
+
+        if (storagePaths.length > 0) {
+          const { error: storageError } = await supabase.storage
+            .from(BUCKET_NAME)
+            .remove(storagePaths);
+
+          if (storageError) {
+            setError(
+              "The image records were removed, but some Storage files could not be deleted: " +
+                storageError.message
+            );
+          }
         }
       }
 
@@ -215,9 +400,12 @@ function Projects() {
           : "Project added successfully!"
       );
 
+      clearSelectedImages();
+
       setShowForm(false);
       setForm(emptyForm);
-      setSelectedImages([]);
+      setExistingImages([]);
+      setRemovedImageIds([]);
       setEditingId(null);
 
       await loadProjects();
@@ -245,20 +433,7 @@ function Projects() {
         (image) => image.project_id === project.id
       );
 
-      const storagePaths = images
-        .map((image) => image.storage_path)
-        .filter(Boolean);
-
-      // Remove actual image files from Supabase Storage
-      if (storagePaths.length > 0) {
-        const { error: storageError } = await supabase.storage
-          .from(BUCKET_NAME)
-          .remove(storagePaths);
-
-        if (storageError) throw storageError;
-      }
-
-      // Remove image records from database
+      // DELETE IMAGE RECORDS FIRST
       const { error: imageError } = await supabase
         .from("project_images")
         .delete()
@@ -266,7 +441,25 @@ function Projects() {
 
       if (imageError) throw imageError;
 
-      // Remove project record
+      // REMOVE IMAGE FILES FROM SUPABASE STORAGE
+      const storagePaths = images
+        .map((image) => image.storage_path)
+        .filter(Boolean);
+
+      if (storagePaths.length > 0) {
+        const { error: storageError } = await supabase.storage
+          .from(BUCKET_NAME)
+          .remove(storagePaths);
+
+        if (storageError) {
+          throw new Error(
+            "Image records were deleted, but Storage cleanup failed: " +
+              storageError.message
+          );
+        }
+      }
+
+      // DELETE PROJECT RECORD
       const { error: projectError } = await supabase
         .from("projects")
         .delete()
@@ -274,7 +467,9 @@ function Projects() {
 
       if (projectError) throw projectError;
 
-      setSuccess("Project and its photographs deleted successfully!");
+      setSuccess(
+        "Project and its photographs deleted successfully!"
+      );
 
       await loadProjects();
     } catch (err) {
@@ -311,20 +506,31 @@ function Projects() {
     marginBottom: "8px",
   };
 
+  const activeExistingImages = existingImages.filter(
+    (image) => !removedImageIds.includes(image.id)
+  );
+
+  const totalImageCount =
+    activeExistingImages.length + selectedImages.length;
+
   return (
     <div style={{ padding: "30px", maxWidth: "1200px", margin: "auto" }}>
-
       {/* PAGE HEADER */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        gap: "15px",
-        flexWrap: "wrap",
-        marginBottom: "25px",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: "15px",
+          flexWrap: "wrap",
+          marginBottom: "25px",
+        }}
+      >
         <div>
-          <h1 style={{ margin: "0 0 8px" }}>Projects Management</h1>
+          <h1 style={{ margin: "0 0 8px" }}>
+            Projects Management
+          </h1>
+
           <p style={{ color: "#718096", margin: 0 }}>
             Add, edit and manage construction projects.
           </p>
@@ -351,42 +557,50 @@ function Projects() {
 
       {/* NOTIFICATIONS */}
       {error && (
-        <div style={{
-          background: "#fff0f0",
-          color: "#b42318",
-          padding: "13px",
-          borderRadius: "6px",
-          marginBottom: "18px",
-        }}>
+        <div
+          style={{
+            background: "#fff0f0",
+            color: "#b42318",
+            padding: "13px",
+            borderRadius: "6px",
+            marginBottom: "18px",
+          }}
+        >
           {error}
         </div>
       )}
 
       {success && (
-        <div style={{
-          background: "#eaf8ef",
-          color: "#18743a",
-          padding: "13px",
-          borderRadius: "6px",
-          marginBottom: "18px",
-        }}>
+        <div
+          style={{
+            background: "#eaf8ef",
+            color: "#18743a",
+            padding: "13px",
+            borderRadius: "6px",
+            marginBottom: "18px",
+          }}
+        >
           {success}
         </div>
       )}
 
       {/* SEARCH */}
-      <div style={{
-        background: "white",
-        padding: "15px",
-        borderRadius: "9px",
-        marginBottom: "22px",
-        border: "1px solid #e8edf2",
-      }}>
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-        }}>
+      <div
+        style={{
+          background: "white",
+          padding: "15px",
+          borderRadius: "9px",
+          marginBottom: "22px",
+          border: "1px solid #e8edf2",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
           <Search color="#718096" size={20} />
 
           <input
@@ -404,27 +618,31 @@ function Projects() {
 
       {/* PROJECT FORM */}
       {showForm && (
-        <div style={{
-          background: "white",
-          padding: "25px",
-          borderRadius: "10px",
-          border: "1px solid #e3e8ef",
-          marginBottom: "25px",
-        }}>
-
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
+        <div
+          style={{
+            background: "white",
+            padding: "25px",
+            borderRadius: "10px",
+            border: "1px solid #e3e8ef",
             marginBottom: "25px",
-          }}>
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "25px",
+            }}
+          >
             <h2 style={{ margin: 0, fontSize: "20px" }}>
               {editingId ? "Edit Project" : "Add New Project"}
             </h2>
 
             <button
               type="button"
-              onClick={() => setShowForm(false)}
+              onClick={closeForm}
+              disabled={saving}
               style={{
                 background: "none",
                 border: "none",
@@ -436,14 +654,18 @@ function Projects() {
           </div>
 
           <form onSubmit={handleSubmit}>
-            <div style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: "18px",
-            }}>
-
+            {/* PROJECT DETAILS */}
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns:
+                  "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "18px",
+              }}
+            >
               <div>
                 <label style={labelStyle}>Project Title *</label>
+
                 <input
                   name="title"
                   value={form.title}
@@ -456,6 +678,7 @@ function Projects() {
 
               <div>
                 <label style={labelStyle}>Category *</label>
+
                 <select
                   name="category"
                   value={form.category}
@@ -472,6 +695,7 @@ function Projects() {
 
               <div>
                 <label style={labelStyle}>Location *</label>
+
                 <input
                   name="location"
                   value={form.location}
@@ -484,6 +708,7 @@ function Projects() {
 
               <div>
                 <label style={labelStyle}>Project Status</label>
+
                 <select
                   name="status"
                   value={form.status}
@@ -498,6 +723,7 @@ function Projects() {
 
               <div>
                 <label style={labelStyle}>Start Date</label>
+
                 <input
                   type="date"
                   name="start_date"
@@ -509,6 +735,7 @@ function Projects() {
 
               <div>
                 <label style={labelStyle}>Completion Date</label>
+
                 <input
                   type="date"
                   name="completion_date"
@@ -519,8 +746,10 @@ function Projects() {
               </div>
             </div>
 
+            {/* DESCRIPTION */}
             <div style={{ marginTop: "20px" }}>
               <label style={labelStyle}>Project Description *</label>
+
               <textarea
                 name="description"
                 value={form.description}
@@ -532,112 +761,325 @@ function Projects() {
               />
             </div>
 
-            {/* IMAGE UPLOAD */}
-            <div style={{ marginTop: "20px" }}>
-              <label style={labelStyle}>Project Photographs</label>
+            {/* EXISTING PROJECT PHOTOGRAPHS */}
+            {editingId && (
+              <div style={{ marginTop: "25px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                    marginBottom: "12px",
+                  }}
+                >
+                  <label style={{ ...labelStyle, margin: 0 }}>
+                    Existing Project Photographs
+                  </label>
 
-              <label style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "10px",
-                border: "2px dashed #cbd5e0",
-                borderRadius: "8px",
-                padding: "25px",
-                cursor: "pointer",
-                color: "#52657d",
-              }}>
+                  <span
+                    style={{
+                      fontSize: "12px",
+                      color: "#718096",
+                    }}
+                  >
+                    {activeExistingImages.length} existing image(s)
+                  </span>
+                </div>
+
+                {existingImages.length === 0 ? (
+                  <p
+                    style={{
+                      color: "#718096",
+                      fontSize: "13px",
+                    }}
+                  >
+                    This project has no existing photographs.
+                  </p>
+                ) : (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(145px, 1fr))",
+                      gap: "12px",
+                    }}
+                  >
+                    {existingImages.map((image) => {
+                      const isRemoved = removedImageIds.includes(
+                        image.id
+                      );
+
+                      return (
+                        <div
+                          key={image.id}
+                          style={{
+                            border: "1px solid #e3e8ef",
+                            borderRadius: "8px",
+                            overflow: "hidden",
+                            opacity: isRemoved ? 0.5 : 1,
+                            background: "#f8fafc",
+                          }}
+                        >
+                          <img
+                            src={image.image_url}
+                            alt={image.alt_text || form.title}
+                            style={{
+                              width: "100%",
+                              height: "115px",
+                              objectFit: "cover",
+                              display: "block",
+                            }}
+                          />
+
+                          <div style={{ padding: "9px" }}>
+                            {isRemoved ? (
+                              <>
+                                <p
+                                  style={{
+                                    color: "#bd3038",
+                                    fontSize: "11px",
+                                    margin: "0 0 7px",
+                                  }}
+                                >
+                                  Marked for removal
+                                </p>
+
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    restoreImage(image.id)
+                                  }
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "5px",
+                                    background: "#edf1f5",
+                                    border: "none",
+                                    borderRadius: "5px",
+                                    padding: "7px",
+                                    cursor: "pointer",
+                                    fontSize: "12px",
+                                  }}
+                                >
+                                  <RotateCcw size={13} />
+                                  Undo
+                                </button>
+                              </>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  markImageForRemoval(image.id)
+                                }
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "5px",
+                                  color: "#bd3038",
+                                  background: "#fff0f0",
+                                  border: "none",
+                                  borderRadius: "5px",
+                                  padding: "7px",
+                                  cursor: "pointer",
+                                  fontSize: "12px",
+                                }}
+                              >
+                                <Trash2 size={13} />
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* NEW IMAGE UPLOAD */}
+            <div style={{ marginTop: "25px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "10px",
+                  marginBottom: "12px",
+                }}
+              >
+                <label style={{ ...labelStyle, margin: 0 }}>
+                  Add New Project Photographs
+                </label>
+
+                <span
+                  style={{
+                    fontSize: "12px",
+                    color: "#718096",
+                  }}
+                >
+                  {totalImageCount}/{MAX_IMAGES} photographs
+                </span>
+              </div>
+
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  border: "2px dashed #cbd5e0",
+                  borderRadius: "8px",
+                  padding: "25px",
+                  cursor:
+                    totalImageCount >= MAX_IMAGES
+                      ? "not-allowed"
+                      : "pointer",
+                  color: "#52657d",
+                  background: "#fafbfd",
+                }}
+              >
                 <Upload size={22} />
-                Select project images (maximum 8)
+
+                {totalImageCount >= MAX_IMAGES
+                  ? "Maximum photographs reached"
+                  : "Select project images"}
 
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
                   multiple
                   hidden
-                  onChange={(e) => {
-                    const files = Array.from(e.target.files || []);
-                    const validFiles = files.filter(
-                      (file) =>
-                        ["image/jpeg", "image/png", "image/webp"].includes(file.type) &&
-                        file.size <= 5 * 1024 * 1024
-                    );
-
-                    if (validFiles.length !== files.length) {
-                      setError(
-                        "Some images were skipped. Use JPG, PNG or WebP files under 5MB each."
-                      );
-                    } else {
-                      setError("");
-                    }
-
-                    setSelectedImages((previous) =>
-                      [...previous, ...validFiles].slice(0, 8)
-                    );
-
-                    e.target.value = "";
-                  }}
+                  disabled={totalImageCount >= MAX_IMAGES}
+                  onChange={handleImageSelection}
                 />
               </label>
 
-              <p style={{ color: "#718096", fontSize: "12px" }}>
-                JPG, PNG or WebP. Maximum 5MB per image and 8 images per project.
+              <p
+                style={{
+                  color: "#718096",
+                  fontSize: "12px",
+                }}
+              >
+                JPG, PNG or WebP. Maximum 5MB per image and 8 images
+                per project.
               </p>
 
-              {selectedImages.map((file, index) => (
-                <div
-                  key={`${file.name}-${index}`}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "8px 0",
-                    fontSize: "13px",
-                  }}
-                >
-                  <span>{file.name}</span>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setSelectedImages((previous) =>
-                        previous.filter((_, i) => i !== index)
-                      )
-                    }
+              {/* NEW IMAGE PREVIEWS */}
+              {selectedImages.length > 0 && (
+                <div style={{ marginTop: "20px" }}>
+                  <h4
                     style={{
-                      color: "#bd3038",
-                      border: "none",
-                      background: "none",
-                      cursor: "pointer",
+                      fontSize: "14px",
+                      marginBottom: "12px",
                     }}
                   >
-                    Remove
-                  </button>
+                    New Images Preview
+                  </h4>
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(145px, 1fr))",
+                      gap: "12px",
+                    }}
+                  >
+                    {selectedImages.map((image) => (
+                      <div
+                        key={image.id}
+                        style={{
+                          border: "1px solid #e3e8ef",
+                          borderRadius: "8px",
+                          overflow: "hidden",
+                          background: "#f8fafc",
+                        }}
+                      >
+                        <img
+                          src={image.preview}
+                          alt={image.file.name}
+                          style={{
+                            width: "100%",
+                            height: "115px",
+                            objectFit: "cover",
+                            display: "block",
+                          }}
+                        />
+
+                        <div style={{ padding: "9px" }}>
+                          <p
+                            style={{
+                              fontSize: "11px",
+                              color: "#52657d",
+                              overflowWrap: "anywhere",
+                              margin: "0 0 8px",
+                            }}
+                          >
+                            {image.file.name}
+                          </p>
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              removeSelectedImage(image.id)
+                            }
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "5px",
+                              color: "#bd3038",
+                              background: "#fff0f0",
+                              border: "none",
+                              borderRadius: "5px",
+                              padding: "7px",
+                              cursor: "pointer",
+                              fontSize: "12px",
+                            }}
+                          >
+                            <X size={13} />
+                            Remove
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              ))}
+              )}
             </div>
 
+            {/* FEATURED PROJECT */}
             <div style={{ marginTop: "20px" }}>
-              <label style={{
-                display: "flex",
-                gap: "10px",
-                alignItems: "center",
-                fontSize: "14px",
-              }}>
+              <label
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "center",
+                  fontSize: "14px",
+                }}
+              >
                 <input
                   type="checkbox"
                   name="featured"
                   checked={form.featured}
                   onChange={handleChange}
                 />
+
                 Feature this project on the homepage
               </label>
             </div>
 
-            <div style={{
-              display: "flex",
-              gap: "12px",
-              marginTop: "25px",
-            }}>
+            {/* FORM BUTTONS */}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                marginTop: "25px",
+                flexWrap: "wrap",
+              }}
+            >
               <button
                 type="submit"
                 disabled={saving}
@@ -658,12 +1100,17 @@ function Projects() {
                     <Loader2 size={16} />
                     Saving...
                   </>
-                ) : editingId ? "Update Project" : "Save Project"}
+                ) : editingId ? (
+                  "Update Project"
+                ) : (
+                  "Save Project"
+                )}
               </button>
 
               <button
                 type="button"
-                onClick={() => setShowForm(false)}
+                onClick={closeForm}
+                disabled={saving}
                 style={{
                   background: "#edf1f5",
                   border: "none",
@@ -680,11 +1127,13 @@ function Projects() {
       )}
 
       {/* PROJECT LIST */}
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        marginBottom: "18px",
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginBottom: "18px",
+        }}
+      >
         <h2 style={{ fontSize: "18px" }}>
           All Projects ({projects.length})
         </h2>
@@ -693,25 +1142,32 @@ function Projects() {
       {loading ? (
         <p>Loading projects...</p>
       ) : filteredProjects.length === 0 ? (
-        <div style={{
-          background: "white",
-          textAlign: "center",
-          padding: "55px 20px",
-          borderRadius: "10px",
-          border: "1px solid #e8edf2",
-        }}>
+        <div
+          style={{
+            background: "white",
+            textAlign: "center",
+            padding: "55px 20px",
+            borderRadius: "10px",
+            border: "1px solid #e8edf2",
+          }}
+        >
           <FolderKanban size={42} color="#9aa8ba" />
+
           <h3>No projects found</h3>
+
           <p style={{ color: "#718096" }}>
             Add your first project to get started.
           </p>
         </div>
       ) : (
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          gap: "20px",
-        }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit, minmax(260px, 1fr))",
+            gap: "20px",
+          }}
+        >
           {filteredProjects.map((project) => {
             const images = projectImages.filter(
               (image) => image.project_id === project.id
@@ -738,24 +1194,28 @@ function Projects() {
                     }}
                   />
                 ) : (
-                  <div style={{
-                    height: "180px",
-                    background: "#e9edf2",
-                    display: "grid",
-                    placeItems: "center",
-                    color: "#8996a8",
-                  }}>
+                  <div
+                    style={{
+                      height: "180px",
+                      background: "#e9edf2",
+                      display: "grid",
+                      placeItems: "center",
+                      color: "#8996a8",
+                    }}
+                  >
                     <FolderKanban size={38} />
                   </div>
                 )}
 
                 <div style={{ padding: "18px" }}>
-                  <span style={{
-                    fontSize: "11px",
-                    color: "#bd3038",
-                    fontWeight: "bold",
-                    textTransform: "uppercase",
-                  }}>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      color: "#bd3038",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                    }}
+                  >
                     {project.category}
                   </span>
 
@@ -763,36 +1223,44 @@ function Projects() {
                     {project.title}
                   </h3>
 
-                  <p style={{
-                    color: "#718096",
-                    fontSize: "13px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}>
+                  <p
+                    style={{
+                      color: "#718096",
+                      fontSize: "13px",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "5px",
+                    }}
+                  >
                     <MapPin size={14} />
                     {project.location}
                   </p>
 
-                  <p style={{
-                    fontSize: "12px",
-                    color: "#52657d",
-                  }}>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "#52657d",
+                    }}
+                  >
                     Status: {project.status}
                   </p>
 
-                  <p style={{
-                    fontSize: "12px",
-                    color: "#718096",
-                  }}>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "#718096",
+                    }}
+                  >
                     {images.length} photograph(s)
                   </p>
 
-                  <div style={{
-                    display: "flex",
-                    gap: "10px",
-                    marginTop: "15px",
-                  }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "10px",
+                      marginTop: "15px",
+                    }}
+                  >
                     <button
                       onClick={() => openEditForm(project)}
                       style={{
