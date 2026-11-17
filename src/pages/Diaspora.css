@@ -54,7 +54,7 @@
   position: relative;
   z-index: 100;
   background: #fff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(10, 209, 26, 0.06);
 }
 
 .diaspora-nav-container {
@@ -2722,5 +2722,40 @@ html {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: .01ms !important;
+  }
+}
+
+
+.diaspora-image-break-content h2 {
+  color: #ffffff;
+}
+
+
+/* ANIMATED IMAGE BREAK BACKGROUND */
+
+.diaspora-image-break {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.diaspora-image-break::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  animation: diasporaBackgroundMove 12s ease-in-out infinite alternate;
+}
+
+@keyframes diasporaBackgroundMove {
+  0% {
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(1.15);
   }
 }
