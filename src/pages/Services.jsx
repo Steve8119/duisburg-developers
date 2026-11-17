@@ -1,10 +1,10 @@
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import {
   ArrowRight,
   CheckCircle2,
+  Wrench,
   PencilRuler,
   Building2,
   HardHat,
@@ -18,18 +18,16 @@ import {
   Truck,
   Trees,
   BriefcaseBusiness,
-  Wrench,
 } from "lucide-react";
 
 import { supabase } from "../lib/supabase";
 import "./Services.css";
 
-// Match service titles to icons
 const getServiceIcon = (title = "") => {
   const name = title.toLowerCase();
 
   if (name.includes("drawing") || name.includes("design")) return PencilRuler;
-  if (name.includes("building construction")) return Building2;
+  if (name.includes("building")) return Building2;
   if (name.includes("steel")) return HardHat;
   if (name.includes("road")) return Route;
   if (name.includes("survey")) return Ruler;
@@ -50,7 +48,6 @@ function Services() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // LOAD SERVICES FROM SUPABASE
   useEffect(() => {
     const loadServices = async () => {
       setLoading(true);
@@ -64,7 +61,7 @@ function Services() {
 
       if (error) {
         console.error("Services loading error:", error);
-        setError("We could not load our services at the moment. Please try again later.");
+        setError("We could not load our services at the moment.");
       } else {
         setServices(data || []);
       }
@@ -75,7 +72,6 @@ function Services() {
     loadServices();
   }, []);
 
-  // SCROLL REVEAL
   useEffect(() => {
     const elements = document.querySelectorAll("[data-service-reveal]");
 
@@ -109,7 +105,6 @@ function Services() {
   return (
     <main className="services-page">
 
-      {/* HERO SECTION */}
       <section className="services-hero">
         <div className="services-hero-overlay"></div>
 
@@ -121,9 +116,7 @@ function Services() {
           <h1>Our Services</h1>
 
           <p>
-            Professional construction, engineering, design and
-            property solutions. From concept to completion,
-            we bring your vision to life.
+            Explore our professional services and solutions.
           </p>
 
           <div className="services-breadcrumb">
@@ -138,84 +131,14 @@ function Services() {
         </div>
       </section>
 
-      {/* INTRODUCTION */}
-      <section className="services-intro">
-
-        <div className="services-intro-image" data-service-reveal>
-          <img
-            src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=90"
-            alt="Architectural design and construction planning"
-          />
-
-          <div className="services-image-label">
-            <strong>DUISBURG DEVELOPERS LTD</strong>
-            <span>We go above & beyond on every job.</span>
-          </div>
-        </div>
-
-        <div className="services-intro-content" data-service-reveal>
-          <span className="services-eyebrow">WHO WE ARE</span>
-
-          <h2>
-            Creating spaces.
-            <br />
-            Building possibilities.
-          </h2>
-
-          <p>
-            Duisburg Developers Ltd is a Kenyan incorporated and
-            locally owned company offering engineering construction,
-            design and build services and construction project management.
-          </p>
-
-          <p>
-            We work with individuals, organisations and property
-            developers to deliver practical solutions that respond
-            to their unique project requirements.
-          </p>
-
-          <div className="services-intro-points">
-            <div>
-              <CheckCircle2 />
-              <span>Professional project approach</span>
-            </div>
-
-            <div>
-              <CheckCircle2 />
-              <span>Quality-focused delivery</span>
-            </div>
-
-            <div>
-              <CheckCircle2 />
-              <span>Client-centred solutions</span>
-            </div>
-          </div>
-
-          <Link to="/#contact" className="services-primary-btn">
-            Discuss Your Project
-            <ArrowRight size={18} />
-          </Link>
-        </div>
-      </section>
-
-      {/* SERVICES SECTION */}
       <section className="services-list-section">
 
         <div className="services-section-heading" data-service-reveal>
           <span className="services-eyebrow">WHAT WE DO</span>
-
           <h2>Our Areas of Expertise</h2>
-
-          <p>
-            We offer a comprehensive range of construction and
-            development services to support projects of different
-            sizes and requirements.
-          </p>
-
           <div className="services-heading-line"></div>
         </div>
 
-        {/* LOADING */}
         {loading && (
           <div className="services-loading">
             <div className="services-loader"></div>
@@ -223,7 +146,6 @@ function Services() {
           </div>
         )}
 
-        {/* ERROR */}
         {!loading && error && (
           <div className="services-empty">
             <Wrench size={42} />
@@ -232,11 +154,10 @@ function Services() {
           </div>
         )}
 
-        {/* NO SERVICES */}
         {!loading && !error && services.length === 0 && (
           <div className="services-empty">
             <Wrench size={42} />
-            <h3>No services available at the moment</h3>
+            <h3>Our services are being updated</h3>
             <p>
               Please check back soon or contact our team
               for assistance.
@@ -244,10 +165,8 @@ function Services() {
           </div>
         )}
 
-        {/* DYNAMIC SERVICE CARDS */}
         {!loading && !error && services.length > 0 && (
           <div className="services-page-grid">
-
             {services.map((service, index) => {
               const Icon = getServiceIcon(service.title);
 
@@ -267,10 +186,7 @@ function Services() {
                     "--service-delay": `${(index % 3) * 0.12}s`,
                   }}
                 >
-
-                  {/* SERVICE IMAGE */}
                   <div className="services-card-image">
-
                     {service.image_url ? (
                       <img
                         src={service.image_url}
@@ -305,14 +221,11 @@ function Services() {
                     </span>
                   </div>
 
-                  {/* SERVICE DETAILS */}
                   <div className="services-card-content">
-
                     <div className="services-card-heading">
                       <span>
                         {String(index + 1).padStart(2, "0")}
                       </span>
-
                       <h3>{service.title}</h3>
                     </div>
 
@@ -334,56 +247,14 @@ function Services() {
                         <ArrowRight size={17} />
                       </Link>
                     </div>
-
                   </div>
                 </article>
               );
             })}
-
           </div>
         )}
+
       </section>
-
-      {/* OUR COMMITMENT */}
-      <section className="services-approach">
-        <div className="services-approach-content" data-service-reveal>
-          <span className="services-eyebrow">OUR COMMITMENT</span>
-
-          <h2>We go above & beyond on every job.</h2>
-
-          <p>
-            Every project deserves attention, responsibility and
-            a professional approach. From the initial idea to
-            project completion, we remain committed to delivering
-            solutions that meet our clients' requirements.
-          </p>
-
-          <Link to="/#contact" className="services-light-btn">
-            Let's Work Together
-            <ArrowRight size={18} />
-          </Link>
-        </div>
-      </section>
-
-      {/* FINAL CALL TO ACTION */}
-      <section className="services-bottom-cta" data-service-reveal>
-        <div className="services-bottom-cta-content">
-          <span>HAVE A PROJECT IN MIND?</span>
-
-          <h2>Let's build something great together.</h2>
-
-          <p>
-            Get in touch with our team and let's discuss
-            how we can bring your project to life.
-          </p>
-        </div>
-
-        <Link to="/#contact" className="services-primary-btn">
-          Request Consultation
-          <ArrowRight size={18} />
-        </Link>
-      </section>
-
     </main>
   );
 }

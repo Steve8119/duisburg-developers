@@ -26,158 +26,6 @@ import { supabase } from "../lib/supabase";
 import "./Home.css";
 
 /* =========================================
-   COMPANY SERVICES
-========================================= */
-
-const companyServices = [
-  "Drawings & Designs",
-  "Building Construction",
-  "Steel Structures Works",
-  "Road Construction",
-  "Survey Works",
-  "Construction Management",
-  "Construction Audits",
-  "Office Partitioning",
-  "Electrical & Mechanical Works",
-  "Paint Works",
-  "Supply of Building Materials",
-  "Landscaping",
-  "Property Management",
-];
-
-const companyServiceDescriptions = {
-  "Drawings & Designs": {
-    description:
-      "We provide professional design and drawing services to help transform your construction ideas into practical plans. Our services cover architectural drawings, structural drawings and preparation of Bills of Quantities (BOQs) to support project planning and cost estimation.",
-    details: [
-      "Architectural drawings",
-      "Structural drawings",
-      "Bill of Quantities (BOQ)",
-    ],
-  },
-
-  "Building Construction": {
-    description:
-      "We undertake building construction projects for individuals and organisations. From project commencement to completion, we focus on quality workmanship, proper coordination and dependable construction solutions.",
-    details: [
-      "Residential building construction",
-      "Commercial building construction",
-      "Construction project implementation",
-    ],
-  },
-
-  "Steel Structures Works": {
-    description:
-      "We undertake steel structure works for different construction requirements, providing practical solutions for structural fabrication, installation and related construction activities.",
-    details: [
-      "Steel structure fabrication",
-      "Steel structure installation",
-      "Structural steel construction works",
-    ],
-  },
-
-  "Road Construction": {
-    description:
-      "We provide road construction services designed to support reliable transport infrastructure, with attention to project planning, construction quality and implementation.",
-    details: [
-      "Road construction",
-      "Road works implementation",
-      "Construction project coordination",
-    ],
-  },
-
-  "Survey Works": {
-    description:
-      "Our survey works support land assessment, construction planning, measurements and project implementation. Accurate surveying helps establish a reliable foundation for construction decisions.",
-    details: [
-      "Land surveying",
-      "Site measurements",
-      "Construction survey support",
-    ],
-  },
-
-  "Construction Management": {
-    description:
-      "We provide construction project management to coordinate project activities, resources, contractors and schedules. Our aim is to support efficient project delivery while maintaining attention to quality and agreed requirements.",
-    details: [
-      "Project planning and coordination",
-      "Site supervision",
-      "Construction progress monitoring",
-    ],
-  },
-
-  "Construction Audits": {
-    description:
-      "We provide construction audit services to assess project activities, progress and implementation. Our reviews help clients gain a clearer understanding of project performance and construction processes.",
-    details: [
-      "Construction project reviews",
-      "Progress assessment",
-      "Project documentation review",
-    ],
-  },
-
-  "Office Partitioning": {
-    description:
-      "We provide office partitioning solutions that help create organised, functional and professional working environments for businesses and organisations.",
-    details: [
-      "Office space partitioning",
-      "Workspace organisation",
-      "Commercial interior improvements",
-    ],
-  },
-
-  "Electrical & Mechanical Works": {
-    description:
-      "We offer electrical and mechanical works as part of our integrated construction solutions, supporting building functionality and project requirements.",
-    details: [
-      "Electrical installation works",
-      "Mechanical installation works",
-      "Building services coordination",
-    ],
-  },
-
-  "Paint Works": {
-    description:
-      "We undertake interior and exterior painting works to improve the appearance, finish and protection of residential and commercial properties.",
-    details: [
-      "Interior painting",
-      "Exterior painting",
-      "Building finishing works",
-    ],
-  },
-
-  "Supply of Building Materials": {
-    description:
-      "We facilitate the supply of building materials to support construction projects, helping clients obtain materials required for their construction activities.",
-    details: [
-      "Building material supply",
-      "Construction material sourcing",
-      "Project material support",
-    ],
-  },
-
-  Landscaping: {
-    description:
-      "We provide landscaping services to improve outdoor spaces through thoughtful planning, design and implementation, creating attractive and functional environments.",
-    details: [
-      "Landscape planning",
-      "Outdoor space improvement",
-      "Landscape implementation",
-    ],
-  },
-
-  "Property Management": {
-    description:
-      "We offer property management services focused on supporting the effective operation, maintenance and management of residential and commercial properties.",
-    details: [
-      "Property management",
-      "Property maintenance coordination",
-      "Property operations support",
-    ],
-  },
-};
-
-/* =========================================
    HERO SLIDES
 ========================================= */
 
@@ -265,68 +113,6 @@ const processSteps = [
 ];
 
 /* =========================================
-   PLACEHOLDER TEAM
-========================================= */
-
-const placeholderTeam = [
-  {
-    id: "placeholder-team-1",
-    full_name: "Lorem Ipsum",
-    position: "Managing Director",
-    biography:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image_url: "/1.jpg",
-  },
-  {
-    id: "placeholder-team-2",
-    full_name: "Lorem Ipsum",
-    position: "Project Manager",
-    biography:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-    image_url: "/2.jpg",
-  },
-  {
-    id: "placeholder-team-3",
-    full_name: "Lorem Ipsum",
-    position: "Architectural Designer",
-    biography:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
-    image_url: "/3.jpg",
-  },
-];
-
-/* =========================================
-   PLACEHOLDER TESTIMONIALS
-========================================= */
-
-const placeholderTestimonials = [
-  {
-    id: "placeholder-testimonial-1",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-    client_name: "Lorem Ipsum",
-    position: "Client",
-    company: "Sample Company",
-  },
-  {
-    id: "placeholder-testimonial-2",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-    client_name: "Lorem Ipsum",
-    position: "Property Owner",
-    company: "Sample Company",
-  },
-  {
-    id: "placeholder-testimonial-3",
-    message:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    client_name: "Lorem Ipsum",
-    position: "Business Client",
-    company: "Sample Company",
-  },
-];
-
-/* =========================================
    HOME COMPONENT
 ========================================= */
 
@@ -337,19 +123,19 @@ function Home() {
   const [testimonials, setTestimonials] = useState([]);
 
   const [loading, setLoading] = useState(true);
+
   const [mobileMenu, setMobileMenu] = useState(false);
   const [servicesDropdown, setServicesDropdown] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
 
-  const [selectedService, setSelectedService] = useState(null);
-
   const [contactLoading, setContactLoading] = useState(false);
   const [diasporaLoading, setDiasporaLoading] = useState(false);
+
   const [contactMessage, setContactMessage] = useState("");
   const [diasporaMessage, setDiasporaMessage] = useState("");
 
   /* =====================================
-     LOAD HOMEPAGE DATA
+     LOAD HOMEPAGE DATA FROM SUPABASE
   ===================================== */
 
   useEffect(() => {
@@ -371,13 +157,13 @@ function Home() {
         .from("services")
         .select("*")
         .eq("is_active", true)
-        .order("display_order"),
+        .order("display_order", { ascending: true }),
 
       supabase
         .from("team_members")
         .select("*")
         .eq("is_active", true)
-        .order("display_order"),
+        .order("display_order", { ascending: true }),
 
       supabase
         .from("testimonials")
@@ -396,24 +182,28 @@ function Home() {
 
     if (projectResult.error) {
       console.error("Projects error:", projectResult.error);
+      setProjects([]);
     } else {
       setProjects(projectResult.data || []);
     }
 
     if (serviceResult.error) {
       console.error("Services error:", serviceResult.error);
+      setServices([]);
     } else {
       setServices(serviceResult.data || []);
     }
 
     if (teamResult.error) {
       console.error("Team error:", teamResult.error);
+      setTeam([]);
     } else {
       setTeam(teamResult.data || []);
     }
 
     if (testimonialResult.error) {
       console.error("Testimonials error:", testimonialResult.error);
+      setTestimonials([]);
     } else {
       setTestimonials(testimonialResult.data || []);
     }
@@ -422,7 +212,7 @@ function Home() {
   };
 
   /* =====================================
-     GLOBAL SCROLL REVEAL ANIMATIONS
+     SCROLL REVEAL ANIMATIONS
   ===================================== */
 
   useEffect(() => {
@@ -455,7 +245,7 @@ function Home() {
     revealElements.forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
-  }, [loading]);
+  }, [loading, services, projects, team, testimonials]);
 
   /* =====================================
      HERO SLIDER
@@ -488,34 +278,15 @@ function Home() {
   };
 
   /* =====================================
-     OPEN COMPANY SERVICE DETAILS
+     SERVICE LINKS
   ===================================== */
 
-  const openCompanyService = (service) => {
-    const serviceInfo = companyServiceDescriptions[service];
+  const getServiceLink = (service) => {
+    if (service.slug) {
+      return `/services#${service.slug}`;
+    }
 
-    setSelectedService({
-      title: service,
-      description:
-        serviceInfo?.description ||
-        "Contact Duisburg Developers Ltd to learn more about this service.",
-      details: serviceInfo?.details || [],
-    });
-  };
-
-  /* =====================================
-     OPEN FEATURED SERVICE DETAILS
-  ===================================== */
-
-  const openFeaturedService = (service) => {
-    setSelectedService({
-      title: service.title,
-      description:
-        service.description ||
-        "Contact us to learn more about this service and how we can support your project.",
-      image: service.image_url,
-      details: [],
-    });
+    return "/services";
   };
 
   /* =====================================
@@ -545,7 +316,8 @@ function Home() {
     ]);
 
     if (error) {
-      console.error(error);
+      console.error("Contact enquiry error:", error);
+
       setContactMessage(
         "Your enquiry could not be sent. Please try again."
       );
@@ -553,6 +325,7 @@ function Home() {
       setContactMessage(
         "Thank you! Your enquiry has been submitted."
       );
+
       form.reset();
     }
 
@@ -589,7 +362,8 @@ function Home() {
       ]);
 
     if (error) {
-      console.error(error);
+      console.error("Diaspora enquiry error:", error);
+
       setDiasporaMessage(
         "Your enquiry could not be sent. Please try again."
       );
@@ -597,22 +371,12 @@ function Home() {
       setDiasporaMessage(
         "Thank you! Your enquiry has been received."
       );
+
       form.reset();
     }
 
     setDiasporaLoading(false);
   };
-
-  /* =====================================
-     PLACEHOLDER DATA SELECTION
-  ===================================== */
-
-  const displayTeam = team.length > 0 ? team : placeholderTeam;
-
-  const displayTestimonials =
-    testimonials.length > 0
-      ? testimonials
-      : placeholderTestimonials;
 
   /* =====================================
      HOMEPAGE
@@ -665,7 +429,7 @@ function Home() {
               Our Process
             </Link>
 
-            {/* SERVICES DROPDOWN */}
+            {/* SERVICES DROPDOWN FROM SUPABASE */}
 
             <div
               className={`nav-dropdown ${
@@ -700,96 +464,15 @@ function Home() {
                   View All Services
                 </Link>
 
-                <Link
-                  to="/services#drawings-designs"
-                  onClick={closeMobileMenu}
-                >
-                  Drawings & Designs
-                </Link>
-
-                <Link
-                  to="/services#building-construction"
-                  onClick={closeMobileMenu}
-                >
-                  Building Construction
-                </Link>
-
-                <Link
-                  to="/services#steel-structures"
-                  onClick={closeMobileMenu}
-                >
-                  Steel Structures Works
-                </Link>
-
-                <Link
-                  to="/services#road-construction"
-                  onClick={closeMobileMenu}
-                >
-                  Road Construction
-                </Link>
-
-                <Link
-                  to="/services#survey-works"
-                  onClick={closeMobileMenu}
-                >
-                  Survey Works
-                </Link>
-
-                <Link
-                  to="/services#construction-management"
-                  onClick={closeMobileMenu}
-                >
-                  Construction Management
-                </Link>
-
-                <Link
-                  to="/services#construction-audits"
-                  onClick={closeMobileMenu}
-                >
-                  Construction Audits
-                </Link>
-
-                <Link
-                  to="/services#office-partitioning"
-                  onClick={closeMobileMenu}
-                >
-                  Office Partitioning
-                </Link>
-
-                <Link
-                  to="/services#electrical-mechanical"
-                  onClick={closeMobileMenu}
-                >
-                  Electrical & Mechanical Works
-                </Link>
-
-                <Link
-                  to="/services#paint-works"
-                  onClick={closeMobileMenu}
-                >
-                  Paint Works
-                </Link>
-
-                <Link
-                  to="/services#building-materials"
-                  onClick={closeMobileMenu}
-                >
-                  Supply of Building Materials
-                </Link>
-
-                <Link
-                  to="/services#landscaping"
-                  onClick={closeMobileMenu}
-                >
-                  Landscaping
-                </Link>
-
-                <Link
-                  to="/services#property-management"
-                  onClick={closeMobileMenu}
-                >
-                  Property Management
-                </Link>
+                {services.map((service) => (
+                  <Link
+                    key={service.id}
+                    to={getServiceLink(service)}
+                    onClick={closeMobileMenu}
+                  >
+                    {service.title}
+                  </Link>
+                ))}
 
               </div>
             </div>
@@ -870,6 +553,7 @@ function Home() {
           <div className="hero-feature">
             <div>
               <strong>Featured:</strong>
+
               <h3>
                 {projects.length > 0
                   ? projects[0].title
@@ -966,6 +650,7 @@ function Home() {
         <div className="section-heading" data-reveal="up">
           <span className="section-label">HOW WE WORK</span>
           <h2>Our Process</h2>
+
           <p>
             We approach every project with careful planning,
             clear communication and a commitment to quality.
@@ -1001,7 +686,9 @@ function Home() {
 
         <div className="section-heading" data-reveal="up">
           <span className="section-label">LET'S WORK TOGETHER</span>
+
           <h2>How We Can Work Together</h2>
+
           <p>
             Whether you need complete project delivery, construction
             or professional design services, we have an arrangement
@@ -1045,13 +732,14 @@ function Home() {
 
       </section>
 
-      {/* SERVICES */}
+      {/* SERVICES FROM SUPABASE */}
 
       <section className="services-section" id="services">
 
         <div className="section-heading" data-reveal="up">
           <span className="section-label">WHAT WE DO</span>
           <h2>Our Services</h2>
+
           <p>
             Comprehensive construction, engineering and property solutions
             tailored to your project requirements.
@@ -1062,40 +750,13 @@ function Home() {
           </Link>
         </div>
 
-        {/* OFFICIAL COMPANY SERVICES */}
-
-        <div className="company-services-grid">
-          {companyServices.map((service, index) => (
-            <article
-              className="company-service-card"
-              key={service}
-              data-reveal="up"
-              style={{
-                transitionDelay: `${(index % 5) * 80}ms`,
-              }}
-            >
-              <span className="company-service-icon">
-                <CheckCircle2 size={21} />
-              </span>
-
-              <span className="company-service-name">
-                {service}
-              </span>
-
-              <button
-                type="button"
-                className="service-read-more"
-                onClick={() => openCompanyService(service)}
-              >
-                Read More <ArrowRight size={15} />
-              </button>
-            </article>
-          ))}
-        </div>
-
-        {/* FEATURED SERVICES FROM SUPABASE */}
-
-        {!loading && services.length > 0 && (
+        {loading ? (
+          <p className="empty-text">Loading services...</p>
+        ) : services.length === 0 ? (
+          <p className="empty-text">
+            Our services will appear here soon.
+          </p>
+        ) : (
           <div className="services-grid">
             {services.map((service, index) => (
               <article
@@ -1110,6 +771,7 @@ function Home() {
                   <img
                     src={service.image_url}
                     alt={service.title}
+                    loading="lazy"
                   />
                 ) : (
                   <div className="service-placeholder">
@@ -1119,110 +781,31 @@ function Home() {
 
                 <div className="service-card-content">
                   <h3>{service.title}</h3>
+
                   <p>{service.description}</p>
 
-                  <button
-                    type="button"
+                  <Link
+                    to={getServiceLink(service)}
                     className="service-featured-read-more"
-                    onClick={() => openFeaturedService(service)}
                   >
                     Read More <ArrowRight size={17} />
-                  </button>
+                  </Link>
                 </div>
               </article>
             ))}
           </div>
         )}
 
-        {/* SERVICE DETAILS POPUP */}
-
-        {selectedService && (
-          <div
-            className="service-modal-overlay"
-            onClick={() => setSelectedService(null)}
-          >
-            <div
-              className="service-modal"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="service-modal-title"
-              onClick={(event) => event.stopPropagation()}
-            >
-              <button
-                type="button"
-                className="service-modal-close"
-                onClick={() => setSelectedService(null)}
-                aria-label="Close service details"
-              >
-                <X size={23} />
-              </button>
-
-              {selectedService.image && (
-                <img
-                  src={selectedService.image}
-                  alt={selectedService.title}
-                  className="service-modal-image"
-                />
-              )}
-
-              <span className="section-label">
-                DUISBURG DEVELOPERS LTD
-              </span>
-
-              <h2 id="service-modal-title">
-                {selectedService.title}
-              </h2>
-
-              <div className="service-modal-divider" />
-
-              <p>{selectedService.description}</p>
-
-              {selectedService.details?.length > 0 && (
-                <div className="service-modal-details">
-                  <h3>Our services include:</h3>
-
-                  <ul>
-                    {selectedService.details.map((detail) => (
-                      <li key={detail}>
-                        <CheckCircle2 size={17} />
-                        <span>{detail}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <div className="service-modal-actions">
-                <a
-                  href="#contact"
-                  className="service-modal-enquire"
-                  onClick={() => setSelectedService(null)}
-                >
-                  Enquire About This Service
-                  <ArrowRight size={17} />
-                </a>
-
-                <button
-                  type="button"
-                  className="service-modal-back"
-                  onClick={() => setSelectedService(null)}
-                >
-                  Back to Services
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
       </section>
 
-      {/* PROJECTS */}
+      {/* PROJECTS FROM SUPABASE */}
 
       <section className="projects-section" id="projects">
 
         <div className="section-heading" data-reveal="up">
           <span className="section-label">OUR PORTFOLIO</span>
           <h2>Featured Projects</h2>
+
           <p>A selection of projects from our portfolio.</p>
 
           <Link to="/projects" className="outline-link">
@@ -1276,9 +859,9 @@ function Home() {
                       </p>
                     )}
 
-                    <a href="#contact" className="text-link">
+                    <Link to="/projects" className="text-link">
                       Explore Project <ArrowRight size={17} />
-                    </a>
+                    </Link>
                   </div>
                 </article>
               );
@@ -1349,7 +932,7 @@ function Home() {
         </div>
       </section>
 
-      {/* TEAM */}
+      {/* TEAM FROM SUPABASE */}
 
       <section className="team-section" id="team">
 
@@ -1360,9 +943,13 @@ function Home() {
 
         {loading ? (
           <p className="empty-text">Loading team...</p>
+        ) : team.length === 0 ? (
+          <p className="empty-text">
+            Our team information will appear here soon.
+          </p>
         ) : (
           <div className="team-grid">
-            {displayTeam.map((member, index) => (
+            {team.map((member, index) => (
               <article
                 className="team-card"
                 key={member.id}
@@ -1375,6 +962,7 @@ function Home() {
                   <img
                     src={member.image_url}
                     alt={member.full_name}
+                    loading="lazy"
                   />
                 ) : (
                   <div className="team-placeholder">
@@ -1395,7 +983,7 @@ function Home() {
 
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* TESTIMONIALS FROM SUPABASE */}
 
       <section className="testimonials-section" id="testimonials">
 
@@ -1406,9 +994,13 @@ function Home() {
 
         {loading ? (
           <p className="empty-text">Loading testimonials...</p>
+        ) : testimonials.length === 0 ? (
+          <p className="empty-text">
+            Client testimonials will appear here soon.
+          </p>
         ) : (
           <div className="testimonials-grid">
-            {displayTestimonials.map((item, index) => (
+            {testimonials.map((item, index) => (
               <article
                 className="testimonial-card"
                 key={item.id}
@@ -1459,9 +1051,11 @@ function Home() {
             <span>
               <CheckCircle2 /> Share your project requirements
             </span>
+
             <span>
               <CheckCircle2 /> Tell us your preferred location
             </span>
+
             <span>
               <CheckCircle2 /> Our team will get in touch
             </span>
@@ -1588,7 +1182,9 @@ function Home() {
 
         <div className="section-heading" data-reveal="up">
           <span className="section-label">LET'S WORK TOGETHER</span>
+
           <h2>Request a Consultation</h2>
+
           <p>
             Tell us about your project. Our team would be glad to hear from you.
           </p>
@@ -1695,9 +1291,9 @@ function Home() {
                 <select name="service" defaultValue="">
                   <option value="">Select a service</option>
 
-                  {companyServices.map((service) => (
-                    <option key={service} value={service}>
-                      {service}
+                  {services.map((service) => (
+                    <option key={service.id} value={service.title}>
+                      {service.title}
                     </option>
                   ))}
 
