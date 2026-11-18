@@ -2865,3 +2865,38 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* MOBILE PROJECT DETAILS SCROLL FIX */
+@media (max-width: 768px) {
+  .project-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-modal {
+    width: 100%;
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: auto 0;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  .project-modal-content {
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .project-modal-details {
+    padding-bottom: 25px;
+  }
+}
